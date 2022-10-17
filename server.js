@@ -172,7 +172,7 @@ app.post('/api/login', async (req, res, next) =>
 
   const { login, password } = req.body;
 
-  const db = client.db("COP4331Cards");
+  const db = client.db();
   const results = await db.collection('Users').find({Login:login,Password:password}).toArray();
 
   var id = -1;
@@ -186,7 +186,7 @@ app.post('/api/login', async (req, res, next) =>
     ln = 'Leinecker';
   }
 
-  if( results.length > 0 )
+  if(results.length > 0 )
   {
     id = results[0].UserID;
     fn = results[0].FirstName;
