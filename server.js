@@ -12,108 +12,7 @@ app.set('port', (process.env.PORT || 5000));
 app.use(cors());
 app.use(bodyParser.json());
 
-var cardList =
-  [
-    'Roy Campanella',
-    'Paul Molitor',
-    'Tony Gwynn',
-    'Dennis Eckersley',
-    'Reggie Jackson',
-    'Gaylord Perry',
-    'Buck Leonard',
-    'Rollie Fingers',
-    'Charlie Gehringer',
-    'Wade Boggs',
-    'Carl Hubbell',
-    'Dave Winfield',
-    'Jackie Robinson',
-    'Ken Griffey, Jr.',
-    'Al Simmons',
-    'Chuck Klein',
-    'Mel Ott',
-    'Mark McGwire',
-    'Nolan Ryan',
-    'Ralph Kiner',
-    'Yogi Berra',
-    'Goose Goslin',
-    'Greg Maddux',
-    'Frankie Frisch',
-    'Ernie Banks',
-    'Ozzie Smith',
-    'Hank Greenberg',
-    'Kirby Puckett',
-    'Bob Feller',
-    'Dizzy Dean',
-    'Joe Jackson',
-    'Sam Crawford',
-    'Barry Bonds',
-    'Duke Snider',
-    'George Sisler',
-    'Ed Walsh',
-    'Tom Seaver',
-    'Willie Stargell',
-    'Bob Gibson',
-    'Brooks Robinson',
-    'Steve Carlton',
-    'Joe Medwick',
-    'Nap Lajoie',
-    'Cal Ripken, Jr.',
-    'Mike Schmidt',
-    'Eddie Murray',
-    'Tris Speaker',
-    'Al Kaline',
-    'Sandy Koufax',
-    'Willie Keeler',
-    'Pete Rose',
-    'Robin Roberts',
-    'Eddie Collins',
-    'Lefty Gomez',
-    'Lefty Grove',
-    'Carl Yastrzemski',
-    'Frank Robinson',
-    'Juan Marichal',
-    'Warren Spahn',
-    'Pie Traynor',
-    'Roberto Clemente',
-    'Harmon Killebrew',
-    'Satchel Paige',
-    'Eddie Plank',
-    'Josh Gibson',
-    'Oscar Charleston',
-    'Mickey Mantle',
-    'Cool Papa Bell',
-    'Johnny Bench',
-    'Mickey Cochrane',
-    'Jimmie Foxx',
-    'Jim Palmer',
-    'Cy Young',
-    'Eddie Mathews',
-    'Honus Wagner',
-    'Paul Waner',
-    'Grover Alexander',
-    'Rod Carew',
-    'Joe DiMaggio',
-    'Joe Morgan',
-    'Stan Musial',
-    'Bill Terry',
-    'Rogers Hornsby',
-    'Lou Brock',
-    'Ted Williams',
-    'Bill Dickey',
-    'Christy Mathewson',
-    'Willie McCovey',
-    'Lou Gehrig',
-    'George Brett',
-    'Hank Aaron',
-    'Harry Heilmann',
-    'Walter Johnson',
-    'Roger Clemens',
-    'Ty Cobb',
-    'Whitey Ford',
-    'Willie Mays',
-    'Rickey Henderson',
-    'Babe Ruth'
-  ];
+
 
 // For Heroku deployment
 
@@ -130,17 +29,91 @@ if (process.env.NODE_ENV === 'production')
 }
 
 
+
+// API endpoints
+
 const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config();
 const url = process.env.MONGODB_URI;
 const client = new MongoClient(url);
 client.connect();
+const database = process.env.MONGODB_DATABASE_STRING;
 
-app.post('/api/addcard', async (req, res, next) =>
+//Login
+// incoming: login, password
+// outgoing: id, firstName, lastName, error
+app.post('/api/login', async (req, res, next) => 
 {
-  // incoming: userId, color
-  // outgoing: error
-	
+ var error = '';
+
+  const { login, password } = req.body;
+
+  let loginLower = login.toLowerCase();
+
+  const db = client.db(database);
+  const results = await db.collection('Users').find({login:loginLower, password:password}).toArray();
+
+  var id = -1;
+  var fn = '';
+  var ln = '';
+
+  if(results.length > 0 )
+  {
+    //store seprate, auto-incrementing int in database
+    id = results[0].userID;
+
+    //just use the mongoDB unique ObjectID
+    //id = results[0]._id;
+
+    fn = results[0].firstName;
+    ln = results[0].lastName;
+  }
+
+  var ret = { id:id, firstName:fn, lastName:ln, error:''};
+  res.status(200).json(ret);
+});
+
+//Register new user
+// incoming: login, password, firstName, lastName
+// outgoing: userID, error
+app.post('/api/register', async (req, res, next) =>
+{	
+  const { login, password, firstName, lastName } = req.body;
+
+  const db = client.db(database);
+
+  //Bad, slow and future bug causing way of incrementing the userID
+  let userNum= await db.collection('Users').countDocuments();
+
+  const newUser = {login: login, password:password, firstName:firstName, lastName:lastName, userID:userNum+1};
+  var error = '';
+
+  try
+  {
+    const result = db.collection('Users').insertOne(newUser);
+  }
+  catch(e)
+  {
+    error = e.toString();
+  }
+
+  const results = await db.collection('Users').find({login:login,password:password}).toArray();
+
+  let id = -1;
+  if(results.length > 0 )
+  {
+    id = results[0].userID;
+  }
+
+  var ret = { userID:id, error: error};
+  res.status(200).json(ret);
+});
+
+//Add Card
+// incoming: userId, color
+// outgoing: error
+app.post('/api/addcard', async (req, res, next) =>
+{	
   const { userId, card } = req.body;
 
   const newCard = {Card:card,UserId:userId};
@@ -148,7 +121,7 @@ app.post('/api/addcard', async (req, res, next) =>
 
   try
   {
-    const db = client.db();
+    const db = client.db(database);
     const result = db.collection('Cards').insertOne(newCard);
   }
   catch(e)
@@ -156,61 +129,23 @@ app.post('/api/addcard', async (req, res, next) =>
     error = e.toString();
   }
 
-  cardList.push( card );
-
   var ret = { error: error };
   res.status(200).json(ret);
 });
 
-
-app.post('/api/login', async (req, res, next) => 
-{
-  // incoming: login, password
-  // outgoing: id, firstName, lastName, error
-	
- var error = '';
-
-  const { login, password } = req.body;
-
-  const db = client.db();
-  const results = await db.collection('Users').find({Login:login,Password:password}).toArray();
-
-  var id = -1;
-  var fn = '';
-  var ln = '';
-
-  if( login.toLowerCase() == 'rickl' && password == 'COP4331' )
-  {
-    id = 1;
-    fn = 'Rick';
-    ln = 'Leinecker';
-  }
-
-  if(results.length > 0 )
-  {
-    id = results[0].UserID;
-    fn = results[0].FirstName;
-    ln = results[0].LastName;
-  }
-
-  var ret = { id:id, firstName:fn, lastName:ln, error:''};
-  res.status(200).json(ret);
-});
-
-
+//Search cards
+// incoming: userId, search
+// outgoing: results[], error
 app.post('/api/searchcards', async (req, res, next) => 
 {
-  // incoming: userId, search
-  // outgoing: results[], error
-
   var error = '';
 
   const { userId, search } = req.body;
 
   var _search = search.trim();
   
-  const db = client.db();
-  const results = await db.collection('Cards').find({"Card":{$regex:_search+'.*', $options:'r'}}).toArray();
+  const db = client.db(database);
+  const results = await db.collection('Cards').find({"Card":{$regex:_search+'.*', $options:'ri'}}).toArray();
   
   var _ret = [];
   for( var i=0; i<results.length; i++ )
@@ -223,7 +158,7 @@ app.post('/api/searchcards', async (req, res, next) =>
 });
 
 
-// 
+
 app.listen(PORT, () => 
 {
   console.log('Server listening on port ' + PORT);
