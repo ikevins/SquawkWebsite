@@ -84,8 +84,9 @@ app.post('/api/register', async (req, res, next) =>
 
   //Bad, slow and future bug causing way of incrementing the userID
   let userNum= await db.collection('Users').countDocuments();
+  let loginLower = login.toLowerCase();
 
-  const newUser = {login: login, password:password, firstName:firstName, lastName:lastName, userID:userNum+1};
+  const newUser = {login: loginLower, password:password, firstName:firstName, lastName:lastName, userID:userNum+1};
   var error = '';
 
   try
