@@ -98,7 +98,7 @@ app.post('/api/register', async (req, res, next) =>
     error = e.toString();
   }
 
-  const results = await db.collection('Users').find({login:login,password:password}).toArray();
+  const results = await db.collection('Users').find({login:loginLower,password:password}).toArray();
 
   let id = -1;
   if(results.length > 0 )
