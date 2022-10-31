@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './Login.css';
 
 function Login()
 {
@@ -58,17 +59,30 @@ function Login()
     };
 
     return(
-      <div id="loginDiv">
-        <form onSubmit={doLogin}>
-        <span id="inner-title">PLEASE LOG IN</span><br />
-        <input type="text" id="loginName" placeholder="Username" 
-            ref={(c) => loginName = c} /><br />
-        <input type="password" id="loginPassword" placeholder="Password" 
-            ref={(c) => loginPassword = c} /><br />
-        <input type="submit" id="loginButton" class="buttons" value = "Do It"
-          onClick={doLogin} />
-        </form>
-        <span id="loginResult">{message}</span>
+      <div class="box">
+        <div class="formBox">
+            <form onSubmit={doLogin}>
+                <h2>Login</h2><br />
+                <div class="inputBox">
+                    <input type="text" id="loginName" required="required"
+                        ref={(c) => loginName = c} />
+                        <span>Email</span>
+                        <i></i><br />
+                </div>
+                <div class="inputBox">
+                    <input type="password" id="loginPassword" required="required"
+                        ref={(c) => loginPassword = c} />
+                        <span>Password</span>
+                        <i></i><br />
+                </div>
+                <input type="submit" id="loginButton" class="buttons" value="Login"
+                    onClick={doLogin} />
+            </form>
+            <div class="link">
+                <a href="youtube.com">Register new account!</a>
+            </div>
+            <span id="loginResult">{message}</span>
+        </div>
      </div>
     );
 };

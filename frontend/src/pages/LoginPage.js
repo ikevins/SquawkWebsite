@@ -9,7 +9,9 @@ const LoginPage = () =>
     return(
       <div>
         <PageTitle />
-        <Login />
+        <body>
+          <Login />
+        </body>
       </div>
     );
 };
