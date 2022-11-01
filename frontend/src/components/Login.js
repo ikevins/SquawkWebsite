@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Login.css';
+import eats from '../assets/eats.mp4'
 
 function Login()
 {
@@ -59,31 +60,35 @@ function Login()
     };
 
     return(
-      <div class="box">
-        <div class="formBox">
-            <form onSubmit={doLogin}>
-                <h2>Login</h2><br />
-                <div class="inputBox">
-                    <input type="text" id="loginName" required="required"
-                        ref={(c) => loginName = c} />
-                        <span>Email</span>
-                        <i></i><br />
+    <div className='main'>
+        <div className="overlay"></div>
+        <video src={eats} autoPlay loop muted/>
+            <div class="box">
+                <div class="formBox">
+                    <form onSubmit={doLogin}>
+                        <h2>Login</h2><br />
+                        <div class="inputBox">
+                            <input type="text" id="loginName" required="required"
+                                ref={(c) => loginName = c} />
+                                <span>Email</span>
+                                <i></i><br />
+                        </div>
+                        <div class="inputBox">
+                            <input type="password" id="loginPassword" required="required"
+                                ref={(c) => loginPassword = c} />
+                                <span>Password</span>
+                                <i></i><br />
+                        </div>
+                        <input type="submit" id="loginButton" class="buttons" value="Login"
+                            onClick={doLogin} />
+                    </form>
+                    <div class="link">
+                        <a href='/register'>Register new account!</a>
+                    </div>
+                    <span id="loginResult">{message}</span>
                 </div>
-                <div class="inputBox">
-                    <input type="password" id="loginPassword" required="required"
-                        ref={(c) => loginPassword = c} />
-                        <span>Password</span>
-                        <i></i><br />
-                </div>
-                <input type="submit" id="loginButton" class="buttons" value="Login"
-                    onClick={doLogin} />
-            </form>
-            <div class="link">
-                <a href="youtube.com">Register new account!</a>
             </div>
-            <span id="loginResult">{message}</span>
-        </div>
-     </div>
+    </div>
     );
 };
 
