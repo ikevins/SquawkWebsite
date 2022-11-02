@@ -7,6 +7,10 @@ const cors = require('cors');
 const SITE_KEY_PATH = ""; // example: "/srv/www/keys/my-site-key.pem" 
 const CERT_PATH = ""; // example : "/srv/www/keys/chain.pem"
 
+// HSTS policy integration
+helmet = require("helmet");
+
+
 const https = require('https');
 const fs = require("fs");
 
@@ -25,6 +29,7 @@ app.set('port', (process.env.PORT || 5000));
 app.use(cors());
 app.use(bodyParser.json());
 
+app.use(helmet());
 
 
 
