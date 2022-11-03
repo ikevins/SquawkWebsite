@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import sha256 from './sha256';
 
 function Register()
 {
@@ -29,8 +30,8 @@ function Register()
     const doRegister = async event => 
     {
         event.preventDefault();
-
-        var obj = {login:RegEmail.value,password:RegPassword.value,firstName:RegFirstName.value,lastName:RegLastName.value};
+        var hashedReg = sha256.hash(RegPassword.value);
+        var obj = {login:RegEmail.value,password:hashedReg,firstName:RegFirstName.value,lastName:RegLastName.value};
         var js = JSON.stringify(obj);
 
         try
@@ -54,7 +55,7 @@ function Register()
             //     window.location.href = '/';
             // }
 
-           // window.location.href = '/';
+            window.location.href = '/';
         }
         catch(e)
         {

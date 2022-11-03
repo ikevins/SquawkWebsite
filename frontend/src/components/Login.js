@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Login.css';
 import eats from '../assets/eats.mp4'
+import sha256 from './sha256.js';
 
 function Login()
 {
@@ -27,8 +28,8 @@ function Login()
     const doLogin = async event => 
     {
         event.preventDefault();
-
-        var obj = {login:loginName.value,password:loginPassword.value};
+        var hashed = sha256.hash(loginPassword.value);
+        var obj = {login:loginName.value,password:hashed};
         var js = JSON.stringify(obj);
 
         try
