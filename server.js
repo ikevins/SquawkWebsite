@@ -2,19 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-// for https implementation
-// paths to SSL certs 
-const SITE_KEY_PATH = ""; // example: "/srv/www/keys/my-site-key.pem" 
-const CERT_PATH = ""; // example : "/srv/www/keys/chain.pem"
-
-const https = require('https');
-const fs = require("fs");
-
-const options = {
-  key: fs.readFileSync(SITE_KEY_PATH),
-  cert: fs.readFileSync(CERT_PATH)
-}
-
 const path = require('path');           
 const PORT = process.env.PORT || 5000;  
 
@@ -24,7 +11,6 @@ app.set('port', (process.env.PORT || 5000));
 
 app.use(cors());
 app.use(bodyParser.json());
-
 
 
 
@@ -178,6 +164,3 @@ app.listen(PORT, () =>
 {
   console.log('Server listening on port ' + PORT);
 });
-
-// create https server
-https.createServer(options, app).listen(PORT);
