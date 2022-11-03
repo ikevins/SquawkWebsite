@@ -17,8 +17,7 @@ function Register()
     }
     
 
-    var RegFirstName;
-    var RegLastName;
+    var RegName;
     var RegPassword;
     var RegEmail;
     var ConfirmPassword;
@@ -30,31 +29,29 @@ function Register()
     {
         event.preventDefault();
 
-        var obj = {login:RegEmail.value,password:RegPassword.value,firstName:RegFirstName.value,lastName:RegLastName.value};
+        var obj = {login:loginName.value,password:loginPassword.value};
         var js = JSON.stringify(obj);
 
         try
         {    
             //const response = await fetch('http://localhost:5000/api/login',
-            const response = await fetch(buildPath('api/register'),
+            const response = await fetch(buildPath('api/login'),
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
 
             var res = JSON.parse(await response.text());
 
-            // if( res.id <= 0 )
-            // {
-            //     setMessage('User/Password combination incorrect');
-            // }
-            // else
-            // {
-            //     var user = {firstName:res.firstName,lastName:res.lastName,id:res.id}
-            //     localStorage.setItem('user_data', JSON.stringify(user));
+            if( res.id <= 0 )
+            {
+                setMessage('User/Password combination incorrect');
+            }
+            else
+            {
+                var user = {firstName:res.firstName,lastName:res.lastName,id:res.id}
+                localStorage.setItem('user_data', JSON.stringify(user));
 
-            //     setMessage('');
-            //     window.location.href = '/';
-            // }
-
-           // window.location.href = '/';
+                setMessage('');
+                window.location.href = '/cards';
+            }
         }
         catch(e)
         {
@@ -67,16 +64,14 @@ function Register()
       <div id="RegisterDiv">
         <form onSubmit={doRegister}>
         <span id="inner-title">Register With us now! </span><br />
-        <input type="text" id="RegFirstName" placeholder="First name" 
-            ref={(c) => RegFirstName = c} /><br />
-        <input type="text" id="RegLastName" placeholder="Last name" 
-            ref={(c) => RegLastName = c} /><br />
-        <input type="text" id="RegEmail" placeholder="Email Address" 
-            ref={(c) => RegEmail = c} /><br />
+        <input type="text" id="RegName" placeholder="Full Name" 
+            ref={(c) => RegName = c} /><br />
+        <input type="password" id="RegEmail" placeholder="Email Address" 
+            ref={(c) => RegPassword = c} /><br />
         <input type="password" id="RegPassword" placeholder="Password" 
             ref={(c) => RegPassword = c} /><br />
         <input type="password" id="ConfirmPassword" placeholder="Re-enter password" 
-            ref={(c) => ConfirmPassword = c} /><br />
+            ref={(c) => RegPassword = c} /><br />
         <input type="submit" id="RegisterButton" class="buttons" value = "Register Now!"
           onClick={doRegister} />
         </form>
