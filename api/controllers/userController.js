@@ -1,5 +1,11 @@
 const asyncHandler = require('express-async-handler');
 const User = require('../models/userModel');
+const jwt = require('jsonwebtoken');
+
+//generate token using user ID 
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIN: '1d' }); // expires 1 day
+};
 
 const registerUser = asyncHandler(async (req, res, next) => {
   const { firstName, lastName, login, password } = req.body;
@@ -28,11 +34,11 @@ const registerUser = asyncHandler(async (req, res, next) => {
     password,
   });
 
-  /* implement late and add back token to 201 json
+  /* fix http request
   // generate token
   const token = generateToken(user._id);
 
-  //send cookie
+  //send cookie to the frontend to prevent saving token in local storage 
   res.cookie("token", token, {
     path: "/",
     httpOnly: true,
@@ -70,13 +76,17 @@ const loginUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("user not found");
   }
-  /*password encyption removed and removed token from 201 json
-  const passwordIsCorrect = await bcrypt.compare(password, user.password);
-  */
+
+  // compares user entered password to the database password. APi request won't work anymore due to unhashed requested
+  if (password != user.password) {
+    res.status(400);
+    throw new Error("Invalid Entry");
+  }
+
   if (user && password) {
     const { _id, firstName, lastName, email, password, } = user;
     res.status(201).json({
-      _id, firstName, lastName, email, password, 
+      _id, firstName, lastName, email, password,
     });
   }
   else {
