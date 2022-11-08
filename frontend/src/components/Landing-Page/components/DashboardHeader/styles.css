@@ -39,3 +39,8 @@
     cursor: pointer;
     border-radius: 20px;
 }
+
+span[id="userName"]{
+    color: black;
+    margin-right: 20%;
+} 

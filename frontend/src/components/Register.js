@@ -69,7 +69,7 @@ function Register()
       <div id="RegisterDiv">
         <div id="regForm"> 
             <form onSubmit={doRegister}>
-            <span id="inner-title">Register With Us ow! </span><br />
+            <span id="inner-title">Register With Us Now! </span><br />
             <input type="text" id="RegFirstName" placeholder="First name:" 
                 ref={(c) => RegFirstName = c} /><br />
             <input type="text" id="RegLastName" placeholder="Last name:" 

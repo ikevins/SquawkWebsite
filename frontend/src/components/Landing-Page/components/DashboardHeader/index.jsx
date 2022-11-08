@@ -3,7 +3,8 @@ import React from 'react';
 import './styles.css';
 import NotificationIcon from '../../assets/icons/notification.svg';
 import SettingsIcon from '../../assets/icons/settings.svg';
-import LogoutIcon from '../../assets/icons/logout.svg';
+import LogoutIcon from '../../assets/icons/logout2.svg';
+import LoggedInName from '../../../LoggedInName';
 
 const doLogout = event => 
 {
@@ -22,11 +23,12 @@ function DashboardHeader ({ btnText, onClick }) {
             }
 
             <div className='dashbord-header-right'>
+                <LoggedInName />
                 <img 
                     src={LogoutIcon}
-                    alt='logout-icon'
-                    className='dashboard-header-icon' 
-                    onClick={doLogout}/>
+                    alt='icon-logout'
+                    className='dashbord-header-icon' 
+                    onClick={doLogout} />
                 <img 
                     src={NotificationIcon}
                     alt='notification-icon'

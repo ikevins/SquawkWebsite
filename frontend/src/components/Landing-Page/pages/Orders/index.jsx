@@ -45,11 +45,11 @@ function Orders () {
     return(
         <div className='dashboard-content'>
             <DashboardHeader
-                btnText="New Order" />
+                btnText="Cant Decide?" />
 
             <div className='dashboard-content-container'>
                 <div className='dashboard-content-header'>
-                    <h2>Orders List</h2>
+                    <h2>Restaurants</h2>
                     <div className='dashboard-content-search'>
                         <input
                             type='text'
@@ -62,12 +62,12 @@ function Orders () {
 
                 <table>
                     <thead>
-                        <th>ID</th>
-                        <th>DATE</th>
+                        <th>RATING</th>
+                        <th>DISTANCE</th>
                         <th>STATUS</th>
-                        <th>COSTUMER</th>
-                        <th>PRODUCT</th>
-                        <th>REVENUE</th>
+                        <th>NAME</th>
+                        <th>TYPE OF FOOD</th>
+                        <th>COST</th>
                     </thead>
 
                     {orders.length !== 0 ?
@@ -78,12 +78,12 @@ function Orders () {
                                     <td><span>{order.date}</span></td>
                                     <td>
                                         <div>
-                                            {order.status === 'Paid' ?
+                                            {order.status === 'Open' ?
                                                 <img
                                                     src={DoneIcon}
                                                     alt='paid-icon'
                                                     className='dashboard-content-icon' />
-                                            : order.status === 'Canceled' ?
+                                            : order.status === 'Closed' ?
                                                 <img
                                                     src={CancelIcon}
                                                     alt='canceled-icon'

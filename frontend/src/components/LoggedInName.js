@@ -11,20 +11,20 @@ function LoggedInName()
     var firstName = ud.firstName;
     var lastName = ud.lastName;
 
-    const doLogout = event => 
-    {
-	    event.preventDefault();
+    // const doLogout = event => 
+    // {
+	  //   event.preventDefault();
 
-        localStorage.removeItem("user_data")
-        window.location.href = '/';
+    //     localStorage.removeItem("user_data")
+    //     window.location.href = '/';
 
-    };    
+    // };    
 
   return(
    <div id="loggedInDiv">
    <span id="userName">Welcome Back {firstName}</span><br />
-   <button type="button" id="logoutButton" class="buttons" 
-     onClick={doLogout}> Log Out </button>
+   {/* <button type="button" id="logoutButton" class="buttons" 
+     onClick={doLogout}> Log Out </button> */}
    </div>
   );
 
