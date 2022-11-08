@@ -1,0 +1,11 @@
+.input[type="text"]{
+    border: none;
+    outline: none;
+    background: #45f3ff;
+    padding: 11px 25px;
+    width: 100%;
+    margin-top: 15px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+}

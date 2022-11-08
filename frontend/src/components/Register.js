@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import sha256 from './sha256';
+import './RegisterPage.css';
 
 function Register()
 {
