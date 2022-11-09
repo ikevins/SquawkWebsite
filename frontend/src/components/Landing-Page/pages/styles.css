@@ -6,7 +6,7 @@
 }
 .dashboard-content-container {
     margin: 1em;
-    background-color: white;
+    background-color: rgb(243, 205, 101);
     border: none;
     border-radius: 10px;
     padding: 1em;
@@ -73,7 +73,7 @@ th {
     padding: 12px 24px;
     background: transparent;
     box-shadow: none;
-    color: #2D83B5;
+    color: black;
     font-size: 0.75rem;
     font-weight: 700;
     line-height: 1.25;
@@ -116,7 +116,7 @@ td span {
     text-transform: none;
     vertical-align: unset;
     text-decoration: none;
-    color: gray;
+    color: black;
     font-weight: 700;
 }
 .dashboard-content-icon {
@@ -132,7 +132,7 @@ td span {
     padding: 0.5rem;
     margin: 0.2rem;
     border-radius: 5px;
-    background-color: #F0F2F5;
+    background-color: #f5f3f0;
     cursor: pointer;
 }
 .dashboard-content-footer .active-pagination {
@@ -140,7 +140,7 @@ td span {
     margin: 0.2rem;
     border-radius: 5px;
     color: #FFFFFF;
-    background-color: #2D83B5;
+    background-color: #2db534;
     cursor: pointer;
 }
 .empty-table {
@@ -151,4 +151,14 @@ td span {
     color: gray;
     font-weight: 700;
     border-color: #FFFFFF;
+}
+div[id="landingBackground"]{
+    background-image: url(../assets/images/burgers.jpg);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    align-items: center;
 }

@@ -26,10 +26,18 @@ function Register()
     var ConfirmPassword;
 
 
+
+
     const [message,setMessage] = useState('');
 
     const doRegister = async event => 
     {
+        if(RegPassword.value !== ConfirmPassword.value)
+        {
+            alert("Passwords do not match!")
+            return;
+        }
+
         event.preventDefault();
         var hashedReg = sha256.hash(RegPassword.value);
         var obj = {login:RegEmail.value,password:hashedReg,firstName:RegFirstName.value,lastName:RegLastName.value};

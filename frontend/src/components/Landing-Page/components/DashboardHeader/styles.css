@@ -29,8 +29,8 @@
     align-items: center;
 }
 .dashbord-header-icon {
-    width: 20px;
-    margin-right: 10px;
+    width: 30px;
+    margin-right: 30px;
     cursor: pointer;
 }
 .dashbord-header-avatar {
@@ -41,6 +41,8 @@
 }
 
 span[id="userName"]{
+    font-family: sans-serif;
     color: black;
     margin-right: 20%;
+    font-weight: 800;
 } 
