@@ -107,7 +107,7 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 //Logout user, frontend need to call the logout function to remove token access. 
-const logout = asyncHandler(async (req, res) => {
+const logOut = asyncHandler(async (req, res) => {
   res.cookie("token", "", {
     path: "/",
     httpOnly: true,
@@ -121,5 +121,5 @@ const logout = asyncHandler(async (req, res) => {
 module.exports = {
   registerUser,
   loginUser,
-  logout,
+  logOut,
 };
