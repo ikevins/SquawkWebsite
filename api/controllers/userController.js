@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 //generate token using user ID 
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIN: '1d' }); // expires 1 day
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '1d' }); // expires 1 day
 };
 
 const registerUser = asyncHandler(async (req, res, next) => {
@@ -34,7 +34,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
     password,
   });
 
-  /* fix http request
+
   // generate token
   const token = generateToken(user._id);
 
@@ -44,14 +44,14 @@ const registerUser = asyncHandler(async (req, res, next) => {
     httpOnly: true,
     expires: new Date(Date.now() + 1000 * 86400), //1 day expires
     sameSite: "none",
-    secure: true
+    secure: true,
   });
-  */
+
 
   if (user) {
-    const { _id, firstName, lastName, email, password, } = user;
+    const { _id, firstName, lastName, email, password, token } = user;
     res.status(201).json({
-      _id, firstName, lastName, email, password,
+      _id, firstName, lastName, email, password, token,
     });
   } else {
     res.status(400);
