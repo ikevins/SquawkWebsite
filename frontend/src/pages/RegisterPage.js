@@ -8,7 +8,6 @@ const RegisterPage = () =>
 
     return(
       <div>
-        <PageTitle />
         <Register />
       </div>
     );

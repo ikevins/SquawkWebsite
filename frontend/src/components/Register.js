@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import sha256 from './sha256';
+import './RegisterPage.css';
 
 function Register()
 {
@@ -25,10 +26,18 @@ function Register()
     var ConfirmPassword;
 
 
+
+
     const [message,setMessage] = useState('');
 
     const doRegister = async event => 
     {
+        if(RegPassword.value !== ConfirmPassword.value)
+        {
+            alert("Passwords do not match!")
+            return;
+        }
+
         event.preventDefault();
         var hashedReg = sha256.hash(RegPassword.value);
         var obj = {login:RegEmail.value,password:hashedReg,firstName:RegFirstName.value,lastName:RegLastName.value};
@@ -66,21 +75,23 @@ function Register()
 
     return(
       <div id="RegisterDiv">
-        <form onSubmit={doRegister}>
-        <span id="inner-title">Register With us now! </span><br />
-        <input type="text" id="RegFirstName" placeholder="First name" 
-            ref={(c) => RegFirstName = c} /><br />
-        <input type="text" id="RegLastName" placeholder="Last name" 
-            ref={(c) => RegLastName = c} /><br />
-        <input type="text" id="RegEmail" placeholder="Email Address" 
-            ref={(c) => RegEmail = c} /><br />
-        <input type="password" id="RegPassword" placeholder="Password" 
-            ref={(c) => RegPassword = c} /><br />
-        <input type="password" id="ConfirmPassword" placeholder="Re-enter password" 
-            ref={(c) => ConfirmPassword = c} /><br />
-        <input type="submit" id="RegisterButton" class="buttons" value = "Register Now!"
-          onClick={doRegister} />
-        </form>
+        <div id="regForm"> 
+            <form onSubmit={doRegister}>
+            <span id="inner-title">Register With Us Now! </span><br />
+            <input type="text" id="RegFirstName" placeholder="First name:" 
+                ref={(c) => RegFirstName = c} /><br />
+            <input type="text" id="RegLastName" placeholder="Last name:" 
+                ref={(c) => RegLastName = c} /><br />
+            <input type="text" id="RegEmail" placeholder="Email Address:" 
+                ref={(c) => RegEmail = c} /><br />
+            <input type="password" id="RegPassword" placeholder="Password:" 
+                ref={(c) => RegPassword = c} /><br />
+            <input type="password" id="ConfirmPassword" placeholder="Re-enter password:" 
+                ref={(c) => ConfirmPassword = c} /><br />
+            <input type="submit" id="RegisterButton" class="buttons" value = "Register Now!"
+            onClick={doRegister} />
+            </form>
+        </div>
         <span id="loginResult">{message}</span>
      </div>
     );

@@ -1,4 +1,6 @@
 import React from 'react';
+import './PageTitle.css';
+
 
 function PageTitle()
 {
