@@ -1,3 +1,4 @@
+const { Int32 } = require('mongodb');
 const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
@@ -29,6 +30,14 @@ const userSchema = mongoose.Schema({
     },
     leastFavorite: {
         type: Array,
+    },
+    verificationCode: {
+        type: Number,
+        default: -1,
+    },
+    isVerified: {
+        type: Boolean,
+        default: false,
     }
 }, {
     timestamps: true,
