@@ -151,7 +151,7 @@ const logOut = asyncHandler(async (req, res) => {
 
 //Get a users info, such as firstname, email...
 const getUserInfo = asyncHandler(async (req, res) => {
-  const {userID} = req.body;
+  const { userID } = req.body;
 
   const user = await User.findOne({ _id: userID });
 
@@ -169,7 +169,7 @@ const getUserInfo = asyncHandler(async (req, res) => {
 
 //edits a users info
 const editUserInfo = asyncHandler(async (req, res) => {
-  const {userID, firstName, lastName, email} = req.body;
+  const { userID, firstName, lastName, email } = req.body;
 
   const user = await User.findOne({ _id: userID });
 
@@ -183,9 +183,8 @@ const editUserInfo = asyncHandler(async (req, res) => {
   user.email = email;
   user.save();
 
-  if(user)
-  {
-    const{ _id, firstName, lastName, email } = user;
+  if (user) {
+    const { _id, firstName, lastName, email } = user;
     res.status(201).json({
       _id, firstName, lastName, email,
     });
@@ -194,7 +193,7 @@ const editUserInfo = asyncHandler(async (req, res) => {
 });
 
 const deleteUser = asyncHandler(async (req, res) => {
-  const {userID} = req.body;
+  const { userID } = req.body;
 
   const user = await User.findOne({ _id: userID });
 
@@ -204,16 +203,48 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 
   User.deleteOne({ _id: userID }, function (err) {
-    if(err)
-    {
+    if (err) {
       console.log(err);
       res.status(400);
       throw new Error("user was not deleted");
-    } 
-    console.log("Successful deletion");
-    res.sendStatus(201);
+    }
+    res.status(201).send("Delete user successfully");
   });
 
+
+});
+
+const changePassword = asyncHandler(async (req, res) => {
+  const { userID, oldPassword, password } = req.body;
+  const user = await User.findOne({ _id: userID })
+
+  //validate
+  if (!user) {
+    res.status(400);
+    throw new Error("User not found, please signup");
+  }
+
+  //validate
+  if (!oldPassword || !password) {
+    res.status(400);
+    throw new Error("Please add old and new password");
+  }
+
+  if (oldPassword != user.password) {
+    res.status(400);
+    throw new Error("Invalid password.");
+  }
+
+  //save new password
+  if (user && password) {
+    user.password = password;
+    await user.save();
+    res.status(200).send("Password changed successfully");
+  }
+  else {
+    res.status(400);
+    throw new Error("Old password is incorrect");
+  }
 
 });
 
@@ -224,4 +255,5 @@ module.exports = {
   getUserInfo,
   editUserInfo,
   deleteUser,
+  changePassword,
 };
