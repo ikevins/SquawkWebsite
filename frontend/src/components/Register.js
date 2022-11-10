@@ -73,26 +73,49 @@ function Register()
         }    
     };
 
-    return(
-      <div id="RegisterDiv">
-        <div id="regForm"> 
-            <form onSubmit={doRegister}>
-            <span id="inner-title">Register With Us Now! </span><br />
-            <input type="text" id="RegFirstName" placeholder="First name:" 
-                ref={(c) => RegFirstName = c} /><br />
-            <input type="text" id="RegLastName" placeholder="Last name:" 
-                ref={(c) => RegLastName = c} /><br />
-            <input type="text" id="RegEmail" placeholder="Email Address:" 
-                ref={(c) => RegEmail = c} /><br />
-            <input type="password" id="RegPassword" placeholder="Password:" 
-                ref={(c) => RegPassword = c} /><br />
-            <input type="password" id="ConfirmPassword" placeholder="Re-enter password:" 
-                ref={(c) => ConfirmPassword = c} /><br />
-            <input type="submit" id="RegisterButton" class="buttons" value = "Register Now!"
-            onClick={doRegister} />
-            </form>
+    return(   
+    <div className='main'>
+        <div className="overlay"></div>
+            <div class="box">
+                <div class="formBox">
+                    <form onSubmit={doRegister}>
+                    <h2>Register With Us Now!</h2><br />
+                    <div class="inputBox">
+                        <input type="text" id="RegFirstName" required="required" 
+                            ref={(c) => RegFirstName = c} />
+                            <span>First Name</span>
+                            <i></i><br />
+                    </div>
+                    <div class="inputBox">
+                        <input type="text" id="RegLastName" required="required" 
+                            ref={(c) => RegLastName = c} />
+                            <span>Last name</span>
+                            <i></i><br />
+                    </div>
+                    <div class="inputBox">
+                        <input type="text" id="RegEmail" required="required" 
+                            ref={(c) => RegEmail = c} />
+                            <span>Email</span>
+                            <i></i><br />
+                    </div>
+                    <div class="inputBox">
+                        <input type="password" id="RegPassword" required="required"
+                            ref={(c) => RegPassword = c} />
+                            <span>Pass</span>
+                            <i></i><br />
+                    </div>
+                    <div class="inputBox">
+                        <input type="password" id="ConfirmPassword" required="required" 
+                            ref={(c) => ConfirmPassword = c} />
+                            <span>re-enter Pass</span>
+                            <i></i><br />
+                    </div>
+                    <input type="submit" id="RegisterButton" class="buttons" value = "Register Now!"
+                    onClick={doRegister} />
+                    </form>
         </div>
         <span id="loginResult">{message}</span>
+     </div>
      </div>
     );
 };
