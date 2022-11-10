@@ -118,8 +118,79 @@ const logOut = asyncHandler(async (req, res) => {
   return res.status(200).json({ message: "Success Logged Out." });
 });
 
+//Get a users info, such as firstname, email...
+const getUserInfo = asyncHandler(async (req, res) => {
+  const {userID} = req.body;
+
+  const user = await User.findOne({ _id: userID });
+
+  if (!user) {
+    res.status(400);
+    throw new Error("user not found");
+  }
+
+  const { _id, firstName, lastName, email } = user;
+  res.status(201).json({
+    _id, firstName, lastName, email,
+  });
+
+});
+
+//edits a users info
+const editUserInfo = asyncHandler(async (req, res) => {
+  const {userID, firstName, lastName, email} = req.body;
+
+  const user = await User.findOne({ _id: userID });
+
+  if (!user) {
+    res.status(400);
+    throw new Error("user not found");
+  }
+
+  user.firstName = firstName;
+  user.lastName = lastName;
+  user.email = email;
+  user.save();
+
+  if(user)
+  {
+    const{ _id, firstName, lastName, email } = user;
+    res.status(201).json({
+      _id, firstName, lastName, email,
+    });
+  }
+
+});
+
+const deleteUser = asyncHandler(async (req, res) => {
+  const {userID} = req.body;
+
+  const user = await User.findOne({ _id: userID });
+
+  if (!user) {
+    res.status(400);
+    throw new Error("user not found");
+  }
+
+  User.deleteOne({ _id: userID }, function (err) {
+    if(err)
+    {
+      console.log(err);
+      res.status(400);
+      throw new Error("user was not deleted");
+    } 
+    console.log("Successful deletion");
+    res.sendStatus(201);
+  });
+
+
+});
+
 module.exports = {
   registerUser,
   loginUser,
   logOut,
+  getUserInfo,
+  editUserInfo,
+  deleteUser,
 };
