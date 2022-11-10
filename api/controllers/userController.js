@@ -59,50 +59,81 @@ const registerUser = asyncHandler(async (req, res, next) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-  const { login, password } = req.body;
-  const email = login; //frontend need to change login to email
+  const token = req.cookies.token;
+  if (!token) {
+    const { login, password } = req.body;
+    const email = login; //frontend need to change login to email
 
-  //validate request
-  if (!email || !password) {
-    res.status(400);
-    throw new Error("please add email and password");
-  }
+    //validate request
+    if (!email || !password) {
+      res.status(400);
+      throw new Error("please add email and password");
+    }
 
-  const user = await User.findOne({ email });
+    const user = await User.findOne({ email });
 
-  //check if user exists in DB
-  if (!user) {
-    res.status(400);
-    throw new Error("user not found");
-  }
+    //check if user exists in DB
+    if (!user) {
+      res.status(400);
+      throw new Error("user not found");
+    }
 
-  // compares user entered password to the database password. APi request won't work anymore due to unhashed requested
-  if (password != user.password) {
-    res.status(400);
-    throw new Error("Invalid Entry: email or password incorrect.");
-  }
+    // compares user entered password to the database password. APi request won't work anymore due to unhashed requested
+    if (password != user.password) {
+      res.status(400);
+      throw new Error("Invalid Entry: email or password incorrect.");
+    }
 
-  // generate token
-  const token = generateToken(user._id);
+    // generate token
+    const token = generateToken(user._id);
 
-  //send cookie to the frontend to prevent saving token in local storage 
-  res.cookie("token", token, {
-    path: "/",
-    httpOnly: true,
-    expires: new Date(Date.now() + 1000 * 86400), //1 day expires
-    sameSite: "none",
-    secure: true,
-  });
-
-  if (user && password) {
-    const { _id, firstName, lastName, email, password, } = user;
-    res.status(201).json({
-      _id, firstName, lastName, email, password, token,
+    //send cookie to the frontend to prevent saving token in local storage 
+    res.cookie("token", token, {
+      path: "/",
+      httpOnly: true,
+      expires: new Date(Date.now() + 1000 * 86400), //1 day expires
+      sameSite: "none",
+      secure: true,
     });
+
+    if (user && password) {
+      const { _id, firstName, lastName, email, password, } = user;
+      res.status(201).json({
+        _id, firstName, lastName, email, password, token,
+      });
+    }
+    else {
+      res.status(400);
+      throw new Error("Invalid email or password");
+    }
   }
   else {
-    res.status(400);
-    throw new Error("Invalid email or password");
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+
+
+    if (verified) {
+      const userTokenId = verified.id;
+      const { userID } = req.body;
+      const userRequestId = userID;
+      console.log("cookie: " + userTokenId);
+      console.log("Id: " + userRequestId);
+      if (userTokenId === userRequestId) {
+        const user = await User.findOne({ _id: userRequestId });
+        const { _id, firstName, lastName, email, } = user;
+        res.status(201).json({
+          _id, firstName, lastName, email
+        });
+      }
+      else {
+        res.status(400);
+        throw new Error("Invalid Token or UserId1");
+      }
+
+    }
+    else {
+      res.status(400);
+      throw new Error("Invalid Token or UserId2");
+    }
   }
 });
 
