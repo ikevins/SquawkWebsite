@@ -32,7 +32,7 @@ const PORT = process.env.PORT || 5000;
 
 //mongoose connect to Datebae
 mongoose
-  .connect(process.env.MONGO_URI) //.env file is now MONGO_URI instead of MONGODB_URI
+  .connect(process.env.MONGODB_URI) //.env file is now MONGO_URI instead of MONGODB_URI
   .then(() => {
     app.listen(PORT, () => {
       console.log(`Server Running on port ${PORT}`);
