@@ -67,8 +67,8 @@ const registerUser = asyncHandler(async (req, res, next) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-  const token = req.cookies.token;
-  if (!token) {
+  const {userID} = req.body;
+  if (!userID) {
     const { login, password } = req.body;
     const email = login; //frontend need to change login to email
 
@@ -116,11 +116,12 @@ const loginUser = asyncHandler(async (req, res) => {
     }
   }//end password if
   else {
+    const token = req.cookies.token;
     const verified = jwt.verify(token, process.env.JWT_SECRET);
 
     if (verified) {
       const userTokenId = verified.id;
-      const { userID } = req.body;
+      //const { userID } = req.body;
       const userRequestId = userID;
       //console.log("cookie: " + userTokenId);
       //console.log("Id: " + userRequestId);
