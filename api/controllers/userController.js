@@ -122,14 +122,14 @@ const loginUser = asyncHandler(async (req, res) => {
       const userTokenId = verified.id;
       const { userID } = req.body;
       const userRequestId = userID;
-      console.log("cookie: " + userTokenId);
-      console.log("Id: " + userRequestId);
+      //console.log("cookie: " + userTokenId);
+      //console.log("Id: " + userRequestId);
       if (userTokenId === userRequestId) {
         const user = await User.findOne({ _id: userRequestId });
         const { _id, firstName, lastName, email, password, isVerified } = user;
         //update token experation
         token.expires = new Date(Date.now() + 1000 * 86400);
-        res.status(201).json({
+        res.status(200).json({
           _id, firstName, lastName, email, password, token, isVerified
         });
       }
@@ -222,7 +222,7 @@ const passwordRecovery = asyncHandler(async (req, res) => {
     user.password = newPassword;
     user.verificationCode = 0;
     user.save();
-    res.status(200).send("Sucessfully reset password");
+    res.status(201).send("Sucessfully reset password");
   }
 
 });
@@ -236,7 +236,7 @@ const removeToken = asyncHandler(async (req, res) => {
     sameSite: "none",
     secure: true
   });
-  return res.status(200).json({ message: "Successfully Logged Out." });
+  return res.status(201).json({ message: "Successfully Logged Out." });
 });
 
 //Get a users info, such as firstname, email...
@@ -307,7 +307,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 
 //simple chance password using old password
 const changePassword = asyncHandler(async (req, res) => {
-  const { userID, oldPassword, password } = req.body;
+  const { userID, oldPassword, newPassword } = req.body;
   const user = await User.findOne({ _id: userID })
 
   //validate
@@ -317,7 +317,7 @@ const changePassword = asyncHandler(async (req, res) => {
   }
 
   //validate
-  if (!oldPassword || !password) {
+  if (!oldPassword || !newPassword) {
     res.status(400);
     throw new Error("Please add old and new password");
   }
@@ -328,10 +328,10 @@ const changePassword = asyncHandler(async (req, res) => {
   }
 
   //save new password
-  if (user && password) {
-    user.password = password;
+  if (user && newPassword) {
+    user.password = newPassword;
     await user.save();
-    res.status(200).send("Password changed successfully");
+    res.status(201).send("Password changed successfully");
   }
   else {
     res.status(400);
