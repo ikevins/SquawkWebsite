@@ -101,3 +101,7 @@ div[id="RegisterDiv"]{
     left: 0;
     align-items: center;
 }
+
+span[id="loginResult"]{
+    color: white;
+}
