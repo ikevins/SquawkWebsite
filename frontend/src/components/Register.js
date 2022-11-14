@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import sha256 from './sha256';
+import eats from '../assets/eats.mp4'
 import './RegisterPage.css';
 
 function Register()
@@ -76,7 +77,8 @@ function Register()
     return(   
     <div className='main'>
         <div className="overlay"></div>
-            <div class="box">
+        <video src={eats} autoPlay loop muted/>
+            <div class="boxR">
                 <div class="formBox">
                     <form onSubmit={doRegister}>
                     <h2>Register With Us Now!</h2><br />

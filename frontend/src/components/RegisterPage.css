@@ -5,16 +5,18 @@
     font-family: 'Poppins', sans-serif;
 }
 
-.box{
+.boxR{
     position: relative;
     width: 380px;
     height: 600px;
     background: #092b2c;
     border-radius: 8px;
     overflow: hidden;
+    margin:auto;
+    margin-top: 30px;
 }
 
-.box::before{
+.boxR::before{
     content: '';
     position: absolute;
     top: -50%;
@@ -26,7 +28,7 @@
     animation: animate 6s linear infinite;
 }
 
-.box::after{
+.boxR::after{
     content: '';
     position: absolute;
     top: -50%;
@@ -149,106 +151,3 @@ input[id="RegisterButton"]{
     font-weight: 600;
     cursor: pointer;
 }
-/* input[id="RegFirstName"]{
-    border: none;
-    outline: none;
-    background: #45f3ff;
-    padding: 11px 25px;
-    margin-top: 250px;
-    margin-left: 800px;
-    border-radius: 4px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-input[id="RegLastName"]{
-    border: none;
-    outline: none;
-    align-items: center;
-    background: #45f3ff;
-    padding: 11px 25px;
-    margin-top: 15px;
-    margin-left: 800px;
-    border-radius: 4px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-input[id="RegEmail"]{
-    border: none;
-    outline: none;
-    background: #45f3ff;
-    padding: 11px 25px;
-    margin-top: 15px;
-    margin-left: 800px;
-    border-radius: 4px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-input[id="RegPassword"]{
-    border: none;
-    outline: none;
-    background: #45f3ff;
-    padding: 11px 25px;
-    margin-top: 15px;
-    margin-left: 800px;
-    border-radius: 4px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-input[id="ConfirmPassword"]{
-    border: none;
-    outline: none;
-    background: #45f3ff;
-    padding: 11px 25px;
-    margin-top: 15px;
-    margin-left: 800px;
-    border-radius: 4px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-span[id="inner-title"]{
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 1.5em;
-    font-weight: 600;
-    margin-left: 800px;
-    margin-top: 300px;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: #fdfdfe;
-    text-shadow: 0px 0px 5px #b393d3, 0px 0px 10px #b393d3, 0px 0px 10px #b393d3,
-      0px 0px 20px #b393d3;
-}
-
-::placeholder{
-    color: black;
-    font-weight: bold;
-    font-size: 1em;
-}
-
-input[id="RegisterButton"]{
-    border: none;
-    outline: none;
-    background: yellow;
-    padding: 11px 25px;
-    margin-top: 55px;
-    width: 15%;
-    margin-left: 775px;
-    border-radius: 4px;
-    font-weight: 600;
-    cursor: pointer;
-}
-div[id="RegisterDiv"]{
-    background-image: url(../assets/pizza.jpg);
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-    align-items: center;
-} */
