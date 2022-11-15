@@ -53,20 +53,14 @@ function Register()
 
             var res = JSON.parse(await response.text());
 
-            // if( res.id <= 0 )
-            // {
-            //     setMessage('User/Password combination incorrect');
-            // }
-            // else
-            // {
-            //     var user = {firstName:res.firstName,lastName:res.lastName,id:res.id}
-            //     localStorage.setItem('user_data', JSON.stringify(user));
+        
+            var user = {firstName:res.firstName,lastName:res.lastName,_id:res._id,token:res.token,password:res.password,email:res.email}
+            localStorage.setItem('user_verification', JSON.stringify(user));
 
-            //     setMessage('');
-            //     window.location.href = '/';
-            // }
+            setMessage('');
 
-            window.location.href = '/';
+
+            window.location.href = '/Verification';
         }
         catch(e)
         {
