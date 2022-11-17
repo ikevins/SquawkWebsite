@@ -43,10 +43,10 @@ function Verification()
         console.log(userCode.value);
         console.log(firstName);
         console.log(userId);
+        console.log(lastName);
 
         try
         {    
-            //const response = await fetch('http://localhost:5000/api/login',
             const response = await fetch(buildPath('api/verifyemail'),
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
 
