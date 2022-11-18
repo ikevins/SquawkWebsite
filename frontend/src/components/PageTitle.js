@@ -1,11 +1,12 @@
 import React from 'react';
 import './PageTitle.css';
+import squawkLogo from '../assets/squawklogo.png';
 
 
 function PageTitle()
 {
    return(
-     <h1 id="title">Squawk</h1>
+     <img src={squawkLogo}></img>
    );
 };
 
