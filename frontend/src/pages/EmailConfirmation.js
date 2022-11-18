@@ -51,10 +51,16 @@ function Verification()
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
 
             var res = JSON.parse(await response.text());
+            
+            if (res.ok)
+            {
+                window.location.href = '/login';
+                console.log("apples are mid")
+            }
 
             setMessage('');
 
-            window.location.href = '/login';
+           // window.location.href = '/login';
         }
         catch(e)
         {
