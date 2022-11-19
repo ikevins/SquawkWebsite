@@ -87,6 +87,9 @@ function Login()
                     <div class="link">
                         <a href='/register'>Register new account!</a>
                     </div>
+                    <div class="link">
+                        <a href='/forgot_password'>Forgot Password?</a>
+                    </div>
                     <span id="loginResult">{message}</span>
                 </div>
             </div>
