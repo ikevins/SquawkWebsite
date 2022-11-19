@@ -13,7 +13,14 @@ const doLogout = event =>
     localStorage.removeItem("user_data")
     window.location.href = '/';
 
-};    
+}; 
+
+const goEdit = event =>
+{
+    event.preventDefault();
+
+    window.location.href = "/update_password";
+}
 
 function DashboardHeader ({ btnText, onClick }) {
     return(
@@ -36,7 +43,8 @@ function DashboardHeader ({ btnText, onClick }) {
                 <img 
                     src={SettingsIcon}
                     alt='settings-icon'
-                    className='dashbord-header-icon' />
+                    className='dashbord-header-icon' 
+                    onClick={goEdit} />
                 <img
                     className='dashbord-header-avatar'
                     src='https://reqres.in/img/faces/9-image.jpg' />
