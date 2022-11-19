@@ -47,7 +47,7 @@ function Login()
             // }
            // else
             {
-                var user = {firstName:res.firstName,lastName:res.lastName,id:res.id}
+                var user = {firstName:res.firstName,lastName:res.lastName,id:res._id}
                 localStorage.setItem('user_data', JSON.stringify(user));
 
                 setMessage('');
