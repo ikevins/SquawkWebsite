@@ -55,16 +55,13 @@ function Verification()
             if (response.ok)
             {
                 window.location.href = '/login';
-                console.log("apples are mid")
             }
             else 
             {
-                // display error messge saying incorrect code here
+                alert("Incorrect Code!");
             }
 
             setMessage('');
-
-           // window.location.href = '/login';
         }
         catch(e)
         {
