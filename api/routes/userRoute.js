@@ -6,7 +6,7 @@ const router = express.Router();
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.get("/disabletoken", removeToken);
-router.get("/getuser", getUserInfo);
+router.post("/getuser", getUserInfo);
 router.post("/edituser", editUserInfo);
 router.post("/deleteuser", deleteUser);
 router.patch("/changepassword", changePassword);
