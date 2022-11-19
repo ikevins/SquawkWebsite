@@ -50,12 +50,16 @@ function Verification()
             const response = await fetch(buildPath('api/verifyemail'),
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
 
-            var res = JSON.parse(await response.text());
+            console.log(response.status);
             
-            if (res.ok)
+            if (response.ok)
             {
                 window.location.href = '/login';
                 console.log("apples are mid")
+            }
+            else 
+            {
+                // display error messge saying incorrect code here
             }
 
             setMessage('');
