@@ -39,3 +39,5 @@ mongoose
     });
   })
   .catch((err) => console.log(err));
+
+  module.exports = app; //send the app model to routes.test.js

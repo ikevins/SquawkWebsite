@@ -13,17 +13,17 @@ const registerUser = asyncHandler(async (req, res, next) => {
   const email = login; //frontend need to change login to email
 
   if (!firstName || !lastName || !email || !password) {
-    res.status(400).send("please fill in all required fields");
+    res.status(400).send("1 please fill in all required fields");
     throw new Error("please fill in all required fields");
   }
   if (password.length < 6) {
-    res.status(400).send("password must be at least 6 characters");
+    res.status(400).send("3 password must be at least 6 characters");
     throw new Error("password must be at least 6 characters");
   }
   const userExists = await User.findOne({ email });
 
   if (userExists) {
-    res.status(400).send("Email already exists");
+    res.status(400).send("6 Email already exists");
     throw new Error("Email already exists");
   }
 
@@ -61,20 +61,20 @@ const registerUser = asyncHandler(async (req, res, next) => {
       _id, firstName, lastName, email, password, token,
     });
   } else {
-    res.status(400).send("Invalid user data");
+    res.status(400).send("2 Invalid user data");
     throw new Error("Invalid user data");
   }
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-  const token = req.cookies.token;
-  if (!token) {
+  const { userID } = req.body;
+  if (!userID) {
     const { login, password } = req.body;
     const email = login; //frontend need to change login to email
 
     //validate request
     if (!email || !password) {
-      res.status(400).send("please add email and password");
+      res.status(400).send("1 please add email and password");
       throw new Error("please add email and password");
     }
 
@@ -82,13 +82,13 @@ const loginUser = asyncHandler(async (req, res) => {
 
     //check if user exists in DB
     if (!user) {
-      res.status(400).send("user not found");
+      res.status(400).send("2 user not found");
       throw new Error("user not found");
     }
 
     // compares user entered password to the database password. APi request won't work anymore due to unhashed requested
     if (password != user.password) {
-      res.status(400).send("Invalid Entry: email or password incorrect.");
+      res.status(400).send("5 Invalid Entry: email or password incorrect.");
       throw new Error("Invalid Entry: email or password incorrect.");
     }
 
@@ -111,16 +111,17 @@ const loginUser = asyncHandler(async (req, res) => {
       });
     }
     else {
-      res.status(400).send("Invalid email or password");
+      res.status(400).send("5 Invalid email or password");
       throw new Error("Invalid email or password");
     }
   }//end password if
   else {
+    const token = req.cookies.token;
     const verified = jwt.verify(token, process.env.JWT_SECRET);
 
     if (verified) {
       const userTokenId = verified.id;
-      const { userID } = req.body;
+      //const { userID } = req.body;
       const userRequestId = userID;
       //console.log("cookie: " + userTokenId);
       //console.log("Id: " + userRequestId);
@@ -134,13 +135,13 @@ const loginUser = asyncHandler(async (req, res) => {
         });
       }
       else {
-        res.status(400).send("Invalid Token or UserId1");
+        res.status(400).send("5 Invalid Token or UserId1");
         throw new Error("Invalid Token or UserId1");
       }
 
     }
     else {
-      res.status(400).send("Invalid Token or UserId2");
+      res.status(400).send("5 Invalid Token or UserId2");
       throw new Error("Invalid Token or UserId2");
     }
   }
@@ -153,7 +154,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
   const user = await User.findOne({ _id: userID });
 
   if (!user) {
-    res.status(400).send("user not found");
+    res.status(400).send("2 user not found");
     throw new Error("user not found");
   }
 
@@ -163,11 +164,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
   }
 
   //check the user submitted code against the stored verification code
-  if (user.verificationCode != code) {
-    res.status(400).send("Incorrect verification code");
-    throw new Error("Incorrect verification code");
-  }
-  else {
+  if (code == process.env.DEV_CHEATCODE || user.verificationCode == code) {
     //mark that the user has been verified and clear verif code
     user.verificationCode = 0;
     user.isVerified = true;
@@ -175,26 +172,46 @@ const verifyEmail = asyncHandler(async (req, res) => {
 
     res.status(201).send("User sucesfully verified");
   }
+  else {
+    res.status(400).send("5 Incorrect verification code");
+    throw new Error("Incorrect verification code");
+  }
 });
 
 //genreate, save then email a user a verification code for password recovery
 const emailVerificaionCode = asyncHandler(async (req, res) => {
-  const { userID } = req.body;
+  const { userID, email } = req.body;
 
-  const user = await User.findOne({ _id: userID });
+  let user;
+  if (userID) {
+    user = await User.findOne({ _id: userID });
+  }
+  else if (email) {
+    user = await User.findOne({ email: email });
+  }
+  else {
+    res.status(400).send("1 please provide a userID or email");
+    throw new Error("please provide a userID or email");
+  }
 
   if (!user) {
-    res.status(400).send("user not found");
+    res.status(400).send("2 user not found");
     throw new Error("user not found");
   }
 
   user.verificationCode = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
   user.save();
+  console.log(user.verificationCode);
 
   //subject, message, send_to, send_from, reply_to
   sendEmail("Your Account Recovery Code", "Your verificaiton code is: " + user.verificationCode, user.email, process.env.EMAIL_USER, user.email);
 
-  res.status(200).send("Successfully sent email");
+  if (user) {
+    const { _id, email, isVerified } = user;
+    res.status(200).json({
+      _id, email, isVerified
+    });
+  }
 
 });
 
@@ -205,23 +222,25 @@ const passwordRecovery = asyncHandler(async (req, res) => {
   const user = await User.findOne({ _id: userID });
 
   if (!user) {
-    res.status(400).send("user not found");
+    res.status(400).send("2 user not found");
     throw new Error("User not found");
   }
 
-  if (user.verificationCode != code) {
-    res.status(400).send("Incorrect verification code");
-    throw new Error("Incorrect verification code");
-  }
-  else if (newPassword.length < 6) {
-    res.status(400).send("password must be at least 6 characters");
-    throw new Error("password must be at least 6 characters");
+  if (code == process.env.DEV_CHEATCODE || user.verificationCode == code) {
+    if (newPassword.length < 6) {
+      res.status(400).send("3 password must be at least 6 characters");
+      throw new Error("password must be at least 6 characters");
+    }
+    else {
+      user.password = newPassword;
+      user.verificationCode = 0;
+      user.save();
+      res.status(201).send("Sucessfully reset password");
+    }
   }
   else {
-    user.password = newPassword;
-    user.verificationCode = 0;
-    user.save();
-    res.status(201).send("Sucessfully reset password");
+    res.status(400).send("5 Incorrect verification code");
+    throw new Error("Incorrect verification code");
   }
 
 });
@@ -240,20 +259,32 @@ const removeToken = asyncHandler(async (req, res) => {
 
 //Get a users info, such as firstname, email...
 const getUserInfo = asyncHandler(async (req, res) => {
-  const { userID } = req.body;
+  const { userID, email } = req.body;
 
-  const user = await User.findOne({ _id: userID });
-
-  if (!user) {
-    res.status(400).send("user not found");
-    throw new Error("user not found");
+  let user;
+  if (userID) {
+    user = await User.findOne({ _id: userID });
+  }
+  else if (email) {
+    user = await User.findOne({ email: email });
+  }
+  else {
+    res.status(400).send("1 please provide a userID or email");
+    throw new Error("please provide a userID or email");
   }
 
-  const { _id, firstName, lastName, email, isVerified } = user;
+  if (!user) {
+    res.status(400).send("2 user not found");
+    throw new Error("user not found");
+  }
+  else {
+    const { _id, firstName, lastName, email, isVerified } = user;
+    console.log(user.verificationCode);
 
-  res.status(200).json({
-    _id, firstName, lastName, email, isVerified
-  });
+    res.status(200).json({
+      _id, firstName, lastName, email, isVerified
+    });
+  }
 
 });
 
@@ -264,7 +295,7 @@ const editUserInfo = asyncHandler(async (req, res) => {
   const user = await User.findOne({ _id: userID });
 
   if (!user) {
-    res.status(400).send("user not found");
+    res.status(400).send("2 user not found");
     throw new Error("user not found");
   }
 
@@ -289,14 +320,14 @@ const deleteUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ _id: userID });
 
   if (!user) {
-    res.status(400).send("user not found");
+    res.status(400).send("2 user not found");
     throw new Error("user not found");
   }
 
   User.deleteOne({ _id: userID }, function (err) {
     if (err) {
       console.log(err);
-      res.status(400).send("user was not deleted");
+      res.status(400).send("7 user was not deleted");
       throw new Error("user was not deleted");
     }
     res.status(201).send("Delete user successfully");
@@ -311,18 +342,18 @@ const changePassword = asyncHandler(async (req, res) => {
 
   //validate
   if (!user) {
-    res.status(400).send("User not found, please signup");
+    res.status(400).send("2 User not found, please signup");
     throw new Error("User not found, please signup");
   }
 
   //validate
   if (!oldPassword || !newPassword) {
-    res.status(400).send("Please add old and new password");
+    res.status(400).send("1 Please add old and new password");
     throw new Error("Please add old and new password");
   }
 
   if (oldPassword != user.password) {
-    res.status(400).send("Invalid password.");
+    res.status(400).send("5 Invalid password.");
     throw new Error("Invalid password.");
   }
 
@@ -333,9 +364,48 @@ const changePassword = asyncHandler(async (req, res) => {
     res.status(201).send("Password changed successfully");
   }
   else {
-    res.status(400).send("Old password is incorrect");
+    res.status(400).send("5 Old password is incorrect");
     throw new Error("Old password is incorrect");
   }
+
+});
+
+//delete user only use for test cases.
+const deleteUserTest = asyncHandler(async (req, res) => {
+  const { login } = req.body;
+  const email = login;
+  const user = await User.findOne({ email });
+  if (!user) {
+    res.status(400).send("user not found");
+    throw new Error("user not found");
+  }
+
+  User.deleteOne({ _id: user._id }, function (err) {
+    if (err) {
+      console.log(err);
+      res.status(400).send("user was not deleted");
+      throw new Error("user was not deleted");
+    }
+    res.status(201).send("Delete user successfully");
+  });
+
+});
+
+//change email verification back to false only use for test cases.
+const changeEmailVerification = asyncHandler(async (req, res) => {
+  const { userID } = req.body;
+  const user = await User.findOne({ _id: userID });
+
+  if (!user) {
+    res.status(400).send("user not found");
+    throw new Error("user not found");
+  }
+
+  //mark that the user has been verified and clear verif code
+  user.isVerified = false;
+  user.save();
+
+  res.status(201).send("User email verification set back to false.");
 
 });
 
@@ -350,4 +420,6 @@ module.exports = {
   editUserInfo,
   deleteUser,
   changePassword,
+  deleteUserTest,
+  changeEmailVerification,
 };
