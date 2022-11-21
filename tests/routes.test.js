@@ -108,6 +108,50 @@ describe('Post change user password back to ', () => {
     });
 });
 
+describe('Get disable the user access token', () => {
+    it('should remove the token created when login or registed', async () => {
+        const res = await request(app)
+            .get('/api/disabletoken')
+        expect(res.statusCode).toEqual(201)
+    });
+});
+
+describe('Post get a users info, such as firstname, email', () => {
+    it('should display user info', async () => {
+        const res = await request(app)
+            .post('/api/getuser')
+            .send({
+                email: process.env.TEST_EMAIL,
+            })
+        expect(res.statusCode).toEqual(200)
+    });
+});
+
+describe('Post edit user information only for first & last name and email', () => {
+    it('should change the first and last name only', async () => {
+        const res = await request(app)
+            .post('/api/edituser')
+            .send({
+                userID: process.env.TEST_USERID,
+                firstName: process.env.TEST_FIRSTNAME_EDIT,
+                lastName: process.env.TEST_LASTNAME_EDIT,
+                email: process.env.TEST_EMAIL,
+            })
+        expect(res.statusCode).toEqual(201)
+    });
+    it('should change back the first and last name', async () => {
+        const res = await request(app)
+            .post('/api/edituser')
+            .send({
+                userID: process.env.TEST_USERID,
+                firstName: process.env.TEST_FIRSTNAME,
+                lastName: process.env.TEST_LASTNAME,
+                email: process.env.TEST_EMAIL,
+            })
+        expect(res.statusCode).toEqual(201)
+    });
+});
+
 describe('Post turn isVerified back to false', () => {
     it('should turn isVerified back to false', async () => {
         const res = await request(app)
