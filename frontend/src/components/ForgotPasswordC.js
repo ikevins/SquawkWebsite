@@ -29,6 +29,7 @@ function ForgotPasswordC()
         event.preventDefault();
         var obj = {email:recoveryEmail.value};
         var js = JSON.stringify(obj);
+        console.log(js);
 
         try
         {    
@@ -43,6 +44,7 @@ function ForgotPasswordC()
             else 
             {
                 alert("Incorrect Code!");
+                console.log(js);
             }
 
             setMessage('');
