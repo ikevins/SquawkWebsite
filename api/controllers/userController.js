@@ -51,6 +51,8 @@ const registerUser = asyncHandler(async (req, res, next) => {
   user.verificationCode = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
   user.save();
 
+  
+
   //subject, message, send_to, send_from, reply_to
   sendEmail("Verify Your Email Address", "Your verificaiton code is: " + user.verificationCode, email, process.env.EMAIL_USER, email);
 
@@ -60,6 +62,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
     res.status(201).json({
       _id, firstName, lastName, email, password, token,
     });
+    console.log("User "+user.email+" has verified. verif code is: "+user.verificationCode);
   } else {
     res.status(400).send("2 Invalid user data");
     throw new Error("Invalid user data");
@@ -211,6 +214,7 @@ const emailVerificaionCode = asyncHandler(async (req, res) => {
     res.status(200).json({
       _id, email, isVerified
     });
+    console.log("User "+user.email+" has forgotten password. verif code is: "+user.verificationCode);
   }
 
 });
@@ -370,6 +374,45 @@ const changePassword = asyncHandler(async (req, res) => {
 
 });
 
+//delete user only use for test cases.
+const deleteUserTest = asyncHandler(async (req, res) => {
+  const { login } = req.body;
+  const email = login;
+  const user = await User.findOne({ email });
+  if (!user) {
+    res.status(400).send("user not found");
+    throw new Error("user not found");
+  }
+
+  User.deleteOne({ _id: user._id }, function (err) {
+    if (err) {
+      console.log(err);
+      res.status(400).send("user was not deleted");
+      throw new Error("user was not deleted");
+    }
+    res.status(201).send("Delete user successfully");
+  });
+
+});
+
+//change email verification back to false only use for test cases.
+const changeEmailVerification = asyncHandler(async (req, res) => {
+  const { userID } = req.body;
+  const user = await User.findOne({ _id: userID });
+
+  if (!user) {
+    res.status(400).send("user not found");
+    throw new Error("user not found");
+  }
+
+  //mark that the user has been verified and clear verif code
+  user.isVerified = false;
+  user.save();
+
+  res.status(201).send("User email verification set back to false.");
+
+});
+
 module.exports = {
   registerUser,
   loginUser,
@@ -381,4 +424,6 @@ module.exports = {
   editUserInfo,
   deleteUser,
   changePassword,
+  deleteUserTest,
+  changeEmailVerification,
 };
