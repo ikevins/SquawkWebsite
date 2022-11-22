@@ -51,6 +51,8 @@ const registerUser = asyncHandler(async (req, res, next) => {
   user.verificationCode = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
   user.save();
 
+  
+
   //subject, message, send_to, send_from, reply_to
   sendEmail("Verify Your Email Address", "Your verificaiton code is: " + user.verificationCode, email, process.env.EMAIL_USER, email);
 
@@ -60,6 +62,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
     res.status(201).json({
       _id, firstName, lastName, email, password, token,
     });
+    console.log("User "+user.email+" has verified. verif code is: "+user.verificationCode);
   } else {
     res.status(400).send("2 Invalid user data");
     throw new Error("Invalid user data");
@@ -201,7 +204,6 @@ const emailVerificaionCode = asyncHandler(async (req, res) => {
 
   user.verificationCode = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
   user.save();
-  console.log(user.verificationCode);
 
   //subject, message, send_to, send_from, reply_to
   sendEmail("Your Account Recovery Code", "Your verificaiton code is: " + user.verificationCode, user.email, process.env.EMAIL_USER, user.email);
@@ -211,6 +213,7 @@ const emailVerificaionCode = asyncHandler(async (req, res) => {
     res.status(200).json({
       _id, email, isVerified
     });
+    console.log("User "+user.email+" has forgotten password. verif code is: "+user.verificationCode);
   }
 
 });
