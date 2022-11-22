@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import './Landing.css';
+
 
 function CardUI()
 {

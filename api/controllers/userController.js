@@ -204,6 +204,7 @@ const emailVerificaionCode = asyncHandler(async (req, res) => {
 
   user.verificationCode = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
   user.save();
+  console.log(user.verificationCode);
 
   //subject, message, send_to, send_from, reply_to
   sendEmail("Your Account Recovery Code", "Your verificaiton code is: " + user.verificationCode, user.email, process.env.EMAIL_USER, user.email);

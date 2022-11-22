@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Login.css';
 import eats from '../assets/eats.mp4'
 import sha256 from './sha256.js';
+import squawkLogo from '../assets/squawklogo.png';
 
 function Login()
 {
@@ -40,13 +41,13 @@ function Login()
 
             var res = JSON.parse(await response.text());
 
-            if( res.id <= 0 )
+            // if( res.id <= 0 )
+            // {
+            //     setMessage('User/Password combination incorrect');
+            // }
+           // else
             {
-                setMessage('User/Password combination incorrect');
-            }
-            else
-            {
-                var user = {firstName:res.firstName,lastName:res.lastName,id:res.id}
+                var user = {firstName:res.firstName,lastName:res.lastName,id:res._id}
                 localStorage.setItem('user_data', JSON.stringify(user));
 
                 setMessage('');
@@ -62,8 +63,8 @@ function Login()
 
     return(
     <div className='main'>
-        <div className="overlay"></div>
-        <video src={eats} autoPlay loop muted/>
+        <div class="left">
+        <img src={squawkLogo} alt="logo"/>
             <div class="box">
                 <div class="formBox">
                     <form onSubmit={doLogin}>
@@ -86,9 +87,17 @@ function Login()
                     <div class="link">
                         <a href='/register'>Register new account!</a>
                     </div>
+                    <div class="link">
+                        <a href='/forgot_password'>Forgot Password?</a>
+                    </div>
                     <span id="loginResult">{message}</span>
                 </div>
             </div>
+        </div>
+        <div class="right">
+            <div className="overlay"></div>
+            <video src={eats} autoPlay loop muted/>
+        </div>
     </div>
     );
 };

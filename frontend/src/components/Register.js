@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import sha256 from './sha256';
+import eats from '../assets/eats.mp4'
+import './RegisterPage.css';
 
 function Register()
 {
@@ -25,10 +27,19 @@ function Register()
     var ConfirmPassword;
 
 
+
+
     const [message,setMessage] = useState('');
 
     const doRegister = async event => 
     {
+        if(RegPassword.value !== ConfirmPassword.value)
+        {
+            // alert("Passwords do not match!")
+            setMessage('YOU SUCK');
+            return;
+        }
+
         event.preventDefault();
         var hashedReg = sha256.hash(RegPassword.value);
         var obj = {login:RegEmail.value,password:hashedReg,firstName:RegFirstName.value,lastName:RegLastName.value};
@@ -42,20 +53,14 @@ function Register()
 
             var res = JSON.parse(await response.text());
 
-            // if( res.id <= 0 )
-            // {
-            //     setMessage('User/Password combination incorrect');
-            // }
-            // else
-            // {
-            //     var user = {firstName:res.firstName,lastName:res.lastName,id:res.id}
-            //     localStorage.setItem('user_data', JSON.stringify(user));
+        
+            var user = {firstName:res.firstName,lastName:res.lastName,_id:res._id,token:res.token,password:res.password,email:res.email}
+            localStorage.setItem('user_verification', JSON.stringify(user));
 
-            //     setMessage('');
-            //     window.location.href = '/';
-            // }
+            setMessage('');
 
-            window.location.href = '/';
+
+            window.location.href = '/Verification';
         }
         catch(e)
         {
@@ -64,24 +69,50 @@ function Register()
         }    
     };
 
-    return(
-      <div id="RegisterDiv">
-        <form onSubmit={doRegister}>
-        <span id="inner-title">Register With us now! </span><br />
-        <input type="text" id="RegFirstName" placeholder="First name" 
-            ref={(c) => RegFirstName = c} /><br />
-        <input type="text" id="RegLastName" placeholder="Last name" 
-            ref={(c) => RegLastName = c} /><br />
-        <input type="text" id="RegEmail" placeholder="Email Address" 
-            ref={(c) => RegEmail = c} /><br />
-        <input type="password" id="RegPassword" placeholder="Password" 
-            ref={(c) => RegPassword = c} /><br />
-        <input type="password" id="ConfirmPassword" placeholder="Re-enter password" 
-            ref={(c) => ConfirmPassword = c} /><br />
-        <input type="submit" id="RegisterButton" class="buttons" value = "Register Now!"
-          onClick={doRegister} />
-        </form>
+    return(   
+    <div className='main'>
+        <div className="overlay"></div>
+        <video src={eats} autoPlay loop muted/>
+            <div class="boxR">
+                <div class="formBox">
+                    <form onSubmit={doRegister}>
+                    <h2>Register With Us Now!</h2><br />
+                    <div class="inputBox">
+                        <input type="text" id="RegFirstName" required="required" 
+                            ref={(c) => RegFirstName = c} />
+                            <span>First Name</span>
+                            <i></i><br />
+                    </div>
+                    <div class="inputBox">
+                        <input type="text" id="RegLastName" required="required" 
+                            ref={(c) => RegLastName = c} />
+                            <span>Last name</span>
+                            <i></i><br />
+                    </div>
+                    <div class="inputBox">
+                        <input type="text" id="RegEmail" required="required" 
+                            ref={(c) => RegEmail = c} />
+                            <span>Email</span>
+                            <i></i><br />
+                    </div>
+                    <div class="inputBox">
+                        <input type="password" id="RegPassword" required="required"
+                            ref={(c) => RegPassword = c} />
+                            <span>Pass</span>
+                            <i></i><br />
+                    </div>
+                    <div class="inputBox">
+                        <input type="password" id="ConfirmPassword" required="required" 
+                            ref={(c) => ConfirmPassword = c} />
+                            <span>re-enter Pass</span>
+                            <i></i><br />
+                    </div>
+                    <input type="submit" id="RegisterButton" class="buttons" value = "Register Now!"
+                    onClick={doRegister} />
+                    </form>
+        </div>
         <span id="loginResult">{message}</span>
+     </div>
      </div>
     );
 };
