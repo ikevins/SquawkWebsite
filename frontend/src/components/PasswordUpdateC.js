@@ -33,7 +33,6 @@ function PasswordUpdateC()
     if(newPassword.value !== ConfirmPassword.value)
     {
         alert("Passwords do not match!")
-        setMessage('YOU SUCK');
         return;
     }
 
