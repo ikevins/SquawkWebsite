@@ -49,7 +49,7 @@ function PasswordUpdateC()
         
         if (response.ok)
         {
-            alert("Recovery Email was sent");
+            alert("Password was successfully updated!");
         }
         else 
         {
