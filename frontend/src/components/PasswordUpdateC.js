@@ -33,7 +33,6 @@ function PasswordUpdateC()
     if(newPassword.value !== ConfirmPassword.value)
     {
         alert("Passwords do not match!")
-        setMessage('YOU SUCK');
         return;
     }
 
@@ -50,7 +49,7 @@ function PasswordUpdateC()
         
         if (response.ok)
         {
-            alert("Recovery Email was sent");
+            alert("Password was successfully updated!");
         }
         else 
         {

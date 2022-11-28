@@ -36,7 +36,7 @@ function Register()
         if(RegPassword.value !== ConfirmPassword.value)
         {
             // alert("Passwords do not match!")
-            setMessage('YOU SUCK');
+            setMessage('Passwords do not match!');
             return;
         }
 
