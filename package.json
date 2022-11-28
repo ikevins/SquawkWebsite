@@ -5,7 +5,7 @@
     "main": "server.js",
     "scripts": {
         "start": "node server.js",
-        "test": "cross-env NODE_ENV=test jest --testTimeout=5000",
+        "test": "NODE_ENV=test jest --testTimeout=5000 --forceExit --detectOpenHandles",
         "heroku-postbuild": " NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
     },
     "author": "",
