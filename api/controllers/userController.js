@@ -68,6 +68,10 @@ const registerUser = asyncHandler(async (req, res, next) => {
 
 const loginUser = asyncHandler(async (req, res) => {
   const { userID } = req.body;
+  const tokenCheck = req.cookies.token;
+  if(tokenCheck)
+    console.log("cookie present");
+
   if (!userID) {
     const { login, password } = req.body;
     const email = login; //frontend need to change login to email
