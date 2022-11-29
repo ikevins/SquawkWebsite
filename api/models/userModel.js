@@ -28,9 +28,6 @@ const userSchema = mongoose.Schema({
     favorite: {
         type: Array,
     },
-    leastFavorite: {
-        type: Array,
-    },
     verificationCode: {
         type: Number,
         default: -1,
