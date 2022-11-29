@@ -342,7 +342,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 //simple chance password using old password
 const changePassword = asyncHandler(async (req, res) => {
   const { userID, oldPassword, newPassword } = req.body;
-  const user = await User.findOne({ _id: userID })
+  const user = await User.findOne({ _id: userID });
 
   //validate
   if (!user) {
