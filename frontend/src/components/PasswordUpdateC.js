@@ -38,13 +38,14 @@ function PasswordUpdateC()
 
     event.preventDefault();
     var hashedNew = sha256.hash(newPassword.value);
-    var obj = {userID:userId,oldPassword:oldPassword.value,newPassword:hashedNew};
+    var hashedOld = sha256.hash(oldPassword.value);
+    var obj = {userID:userId,oldPassword:hashedOld,newPassword:hashedNew};
     var js = JSON.stringify(obj);
 
     try
     {    
         const response = await fetch(buildPath('api/changepassword'),
-            {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+            {method:'PATCH',body:js,headers:{'Content-Type': 'application/json'}});
 
         
         if (response.ok)
