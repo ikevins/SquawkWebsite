@@ -9,19 +9,27 @@ import DoneIcon from '../../assets/icons/done.svg';
 import CancelIcon from '../../assets/icons/cancel.svg';
 import RefundedIcon from '../../assets/icons/refunded.svg';
 
-var apiKey = 'ygXg7nrp2TH3X_CpYBzRw-x0QN1-D5owhXyg2h6kI80cxwG-gDh3SNjpxU3X4T55tj-7PyQL7WZ8U2_rT0hxrkRU5nBXZnZGBjFNAOyWWEJ8aPhP4W3J4FPXrZVQY3Yx';
+
+const app_name = 'cop4331-1738'
+function buildPath(route)
+{
+    if (process.env.NODE_ENV === 'production') 
+    {
+        return 'https://' + app_name +  '.herokuapp.com/' + route;
+    }
+    else
+    {        
+        return 'http://localhost:5000/' + route;
+    }
+}
+
+
+
 const yelpFusion = async () => {
 
      try {
 
-        const response = await fetch("https://api.yelp.com/v3/businesses/search?&location=orlando",{
-            method: 'GET',
-            headers: {
-                Authorization: 'Bearer ' + apiKey
-
-
-            },
-        });
+        const response = await fetch(buildPath('yelp/search?location=orlando'));
 
         var Results = await response.json();
         console.log(Results);
