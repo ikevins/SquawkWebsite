@@ -23,11 +23,11 @@ const fusionSearch = asyncHandler((req, res) => {
       offset: offset,
       limit: limit,
       term: term,
-      sort_by: sort_by,
+      // sort_by: sort_by,
       attributes: attributes,
       open_at: open_at,
       open_now: open_now,
-      price: price,
+      // price: price,
       radius: radius,
       longitude: longitude,
       latitude: latitude
