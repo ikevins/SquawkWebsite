@@ -18,6 +18,13 @@ const fusionSearch = asyncHandler((req, res) => {
   const longitude = req.query.longitude;
   const latitude = req.query.latitude;
   
+  if(!location)
+  {
+    const error = {error:{code: "NO_LOCATION_PROVIDED", description: "Please provide a location"}};
+    res.status(400).json(error);
+    throw new Error("Fusion: no location provided");
+  }
+
   client.search({
       location: location,
       offset: offset,
@@ -32,13 +39,14 @@ const fusionSearch = asyncHandler((req, res) => {
       longitude: longitude,
       latitude: latitude
 
-
   }).then(response => {
       //console.log(JSON.stringify(response.jsonBody));
       res.send(response.jsonBody.businesses);
   }).catch(e => {
       //console.log(e);
-      res.status(400).send("Yelp fusion search error");
+      const error = JSON.parse(e.response.body);
+      console.log("Fusion error: "+error.error.code+": "+error.error.description);
+      res.status(400).send(error);
   });
 });
 
@@ -46,11 +54,13 @@ const fusionGetBusinessDetails = asyncHandler((req, res) => {
   const businessID = req.query.businessID;
   
   client.business(businessID).then(response => {
-      console.log(JSON.stringify(response.jsonBody));
+      //console.log(JSON.stringify(response.jsonBody));
       res.send(response.jsonBody);
   }).catch(e => {
-      console.log(e);
-      res.status(400).send("Yelp fusion info error");
+      //console.log(e);
+      const error = JSON.parse(e.response.body);
+      console.log("Fusion error: "+error.error.code+": "+error.error.description);
+      res.status(400).send(error);
   });
 });
 
