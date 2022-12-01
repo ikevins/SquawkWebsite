@@ -12,7 +12,23 @@ const path = require('path');
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(cors());
+
+//set cors policy to allow all for local dev (allow saving cookies)
+if(process.env.NODE_ENV == 'production')
+{
+  app.use(cors());
+}
+else
+{
+  // app.use(cors());
+  app.use(cors({
+  origin : "http://localhost:3000",
+  credentials: true,
+  preflightContinue: true,
+  }));
+}
+
+
 
 // Server static assets if in production
 if (process.env.NODE_ENV === 'production') {
