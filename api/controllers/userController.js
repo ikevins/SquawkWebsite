@@ -60,7 +60,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
   if (user) {
     const { _id, firstName, lastName, email, password } = user;
     res.status(201).json({
-      _id, firstName, lastName, email, password, token,
+      _id, firstName, lastName, email, token,
     });
     console.log("User "+user.email+" has verified. verif code is: "+user.verificationCode);
   } else {
@@ -114,7 +114,7 @@ const loginUser = asyncHandler(async (req, res) => {
     if (user && password) {
       const { _id, firstName, lastName, email, password, isVerified } = user;
       res.status(201).json({
-        _id, firstName, lastName, email, password, token, isVerified
+        _id, firstName, lastName, email, token, isVerified
       });
     }
     else {
