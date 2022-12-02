@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import DashboardHeader from '../../components/DashboardHeader';
 
-//import all_orders from '../../constants/orders';
+import all_orders from '../../constants/orders';
 import {calculateRange, sliceData} from '../../utils/table-pagination';
 
 import '../styles.css';
@@ -23,10 +23,10 @@ function buildPath(route)
     }
 }
 
-var all_orders;
+//var all_orders;
 
 
-yelpFusion();
+//yelpFusion();
 
 
 const yelpFusion = async () => {
