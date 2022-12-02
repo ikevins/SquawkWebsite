@@ -1,14 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import DashboardHeader from '../../components/DashboardHeader';
 
-import all_orders from '../../constants/orders';
+//import all_orders from '../../constants/orders';
 import {calculateRange, sliceData} from '../../utils/table-pagination';
 
 import '../styles.css';
 import DoneIcon from '../../assets/icons/done.svg';
 import CancelIcon from '../../assets/icons/cancel.svg';
-import RefundedIcon from '../../assets/icons/refunded.svg';
 
+var userLocation = localStorage.getItem('user_location');
 
 const app_name = 'cop4331-1738'
 function buildPath(route)
@@ -23,16 +23,20 @@ function buildPath(route)
     }
 }
 
+var all_orders;
+
+
+yelpFusion();
 
 
 const yelpFusion = async () => {
 
      try {
 
-        const response = await fetch(buildPath('yelp/search?location=orlando'));
-
+        const response = await fetch(buildPath('yelp/search?location='+ userLocation));
         var Results = await response.json();
         console.log(Results);
+        all_orders = Results;
     }
     catch(e)
     {

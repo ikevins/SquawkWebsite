@@ -17,51 +17,25 @@ function UserStuff()
             return 'http://localhost:5000/' + route;
         }
     }
-    
-
-    var _ud = localStorage.getItem('user_verification');
-    var ud = JSON.parse(_ud);
-    var userId = ud._id;
-    var firstName = ud.firstName;
-    var lastName = ud.lastName;
-    var email = ud.email;
-    var token = ud.token;
-    var password = ud.password;
-
-    var userCode;
 
 
+    var userLocation;
 
-    const [message,setMessage] = useState('');
-
-    const doVerify = async event => 
+    const yelpCall = async event => 
     {
 
         event.preventDefault();
-        var obj = {userID:userId,code:userCode.value};
-        var js = JSON.stringify(obj);
-        console.log(userCode.value);
-        console.log(firstName);
-        console.log(userId);
-        console.log(lastName);
+        localStorage.setItem('user_location', userLocation.value);
+
 
         try
         {    
-            const response = await fetch(buildPath('api/verifyemail'),
-                {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+            const response = await fetch(buildPath('yelp/search?location=' + userLocation.value))
+            var Results = await response.json();
+            console.log(Results);
+            localStorage.setItem('user_restaurants', Results);
 
-            console.log(response.status);
-            
-            if (response.ok)
-            {
-                window.location.href = '/login';
-            }
-            else 
-            {
-                alert("Incorrect Code!");
-            }
-
-            setMessage('');
+            window.location.href = '/dashboard'
         }
         catch(e)
         {
@@ -70,26 +44,27 @@ function UserStuff()
         }    
     };
 
+
     return(   
     <div className='main'>
         <div className="overlay"></div>
         <video src={eats} autoPlay loop muted/>
             <div class="boxR">
                 <div class="formBox">
-                    <form onSubmit={doVerify}>
+                    <form onSubmit={yelpCall}>
                     <h2>Another day in paradise here in...</h2><br />
                     <div class="inputBox">
                         <input type="text" id="RegFirstName" required="required" 
-                            ref={(c) => userCode = c} />
+                            ref={(c) => userLocation = c} />
                             <span>What city are you in? </span>
                             <i></i><br />
                     </div>
 
                     <input type="submit" id="RegisterButton" class="buttons" value = "Show me the food!"
-                    onClick={doVerify} />
+                    onClick={yelpCall} />
                     </form>
         </div>
-        <span id="loginResult">{message}</span>
+        {/* <span id="loginResult">{message}</span> */}
      </div>
      </div>
     );
