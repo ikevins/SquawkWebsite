@@ -35,7 +35,7 @@ function UserStuff()
             console.log(Results);
             localStorage.setItem('user_restaurants', Results);
 
-            window.location.href = '/dashboard'
+            //window.location.href = '/dashboard'
         }
         catch(e)
         {
