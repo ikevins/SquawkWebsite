@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import sha256 from './sha256';
 import './ForgotPassword.css';
+import squawkLogo from '../assets/squawklogo.png';
+import eats from '../assets/eats.mp4';
 
 function ForgotPasswordC()
 {
@@ -64,8 +66,9 @@ function ForgotPasswordC()
 
    return(
     <div className='main'>
-    <div className="overlay"></div>
-        <div class="boxR">
+    <div class="left">
+    <img src={squawkLogo} alt="logo"/>
+        <div class="boxA">
             <div class="formBox">
                 <form>
                 <h2>Forgot Password?</h2><br />
@@ -79,6 +82,11 @@ function ForgotPasswordC()
                 onClick={sendRecovery} />
                 </form>
             </div>
+        </div>
+    </div>
+    <div class="right">
+            <div className="overlay"></div>
+            <video src={eats} autoPlay loop muted/>
         </div>
     </div>
    );

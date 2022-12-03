@@ -5,6 +5,27 @@
     font-family: 'Poppins', sans-serif;
 }
 
+.left{
+    position: relative;
+    width: 50%;
+    float: left;
+    height: 100%;
+    background: linear-gradient(to right,#092b2c,#105e48,#0f684c,#105e48,#092b2c);
+}
+
+.right{
+    position: relative;
+    width: 50%;
+    float: left;
+    height: 100%;
+}
+
+img{
+    height: 26%;
+    width: 26%;
+    margin-left: 37%;
+}
+
 .boxR{
     position: relative;
     width: 380px;
@@ -22,7 +43,7 @@
     top: -50%;
     left: -50%;
     width: 380px;
-    height: 420px;
+    height: 600px;
     background: linear-gradient(0deg,transparent,#17a074,#17a074);
     transform-origin: bottom right;
     animation: animate 6s linear infinite;
@@ -34,7 +55,7 @@
     top: -50%;
     left: -50%;
     width: 380px;
-    height: 420px;
+    height: 600px;
     background: linear-gradient(0deg,transparent,#17a074,#17a074);
     transform-origin: bottom right;
     animation: animate 6s linear infinite;
