@@ -33,9 +33,12 @@ function UserStuff()
             const response = await fetch(buildPath('yelp/search?location=' + userLocation.value))
             var Results = await response.json();
             console.log(Results);
-            localStorage.setItem('user_restaurants', Results);
+            localStorage.setItem('user_restaurants', JSON.stringify(Results));
+            var checking = localStorage.getItem('user_restaurants');
+            checking = JSON.parse(checking);
+            console.log(checking);
 
-            //window.location.href = '/dashboard'
+            window.location.href = '/dashboard'
         }
         catch(e)
         {
