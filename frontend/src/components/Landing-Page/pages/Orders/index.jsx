@@ -7,7 +7,44 @@ import {calculateRange, sliceData} from '../../utils/table-pagination';
 import '../styles.css';
 import DoneIcon from '../../assets/icons/done.svg';
 import CancelIcon from '../../assets/icons/cancel.svg';
-import RefundedIcon from '../../assets/icons/refunded.svg';
+
+var userLocation = localStorage.getItem('user_location');
+
+const app_name = 'cop4331-1738'
+function buildPath(route)
+{
+    if (process.env.NODE_ENV === 'production') 
+    {
+        return 'https://' + app_name +  '.herokuapp.com/' + route;
+    }
+    else
+    {        
+        return 'http://localhost:5000/' + route;
+    }
+}
+
+//var all_orders;
+
+
+//yelpFusion();
+
+
+const yelpFusion = async () => {
+
+     try {
+
+        const response = await fetch(buildPath('yelp/search?location='+ userLocation));
+        var Results = await response.json();
+        console.log(Results);
+        all_orders = Results;
+    }
+    catch(e)
+    {
+        console.log(e.toString());
+        return;
+    }    
+};
+
 
 function Orders () {
     const [search, setSearch] = useState('');
@@ -25,9 +62,9 @@ function Orders () {
         setSearch(event.target.value);
         if (event.target.value !== '') {
             let search_results = orders.filter((item) =>
-                item.first_name.toLowerCase().includes(search.toLowerCase()) ||
-                item.last_name.toLowerCase().includes(search.toLowerCase()) ||
-                item.product.toLowerCase().includes(search.toLowerCase())
+                item.name.toLowerCase().includes(search.toLowerCase()) ||
+                item.categories[0].alias.toLowerCase().includes(search.toLowerCase()) ||
+                item.categories[0].title.toLowerCase().includes(search.toLowerCase())
             );
             setOrders(search_results);
         }
@@ -75,40 +112,35 @@ function Orders () {
                             <tbody>
                                 {orders.map((order, index) => (
                                     <tr key={index}>
-                                        <td><span>{order.id}</span></td>
-                                        <td><span>{order.date}</span></td>
+                                        <td><span>{order.rating}</span></td>
+                                        <td><span>{(Math.floor((order.distance/1609.344)*10)/10) + ' mi'}</span></td>
                                         <td>
                                             <div>
-                                                {order.status === 'Open' ?
+                                                {order.is_closed == false ?
                                                     <img
                                                         src={DoneIcon}
                                                         alt='paid-icon'
                                                         className='dashboard-content-icon' />
-                                                : order.status === 'Closed' ?
+                                                : order.is_closed == true ?
                                                     <img
                                                         src={CancelIcon}
                                                         alt='canceled-icon'
                                                         className='dashboard-content-icon' />
-                                                : order.status === 'Refunded' ?
-                                                    <img
-                                                        src={RefundedIcon}
-                                                        alt='refunded-icon'
-                                                        className='dashboard-content-icon' />
                                                 : null}
-                                                <span>{order.status}</span>
+                                                <span>{order.is_closed}</span>
                                             </div>
                                         </td>
                                         <td>
                                             <div>
                                                 <img 
-                                                    src={order.avatar}
+                                                    src={order.image_url}
                                                     className='dashboard-content-avatar'
-                                                    alt={order.first_name + ' ' +order.last_name} />
-                                                <span>{order.first_name} {order.last_name}</span>
+                                                    alt={order.name} />
+                                                <span>{order.name}</span>
                                             </div>
                                         </td>
-                                        <td><span>{order.product}</span></td>
-                                        <td><span>${order.price}</span></td>
+                                        <td><span>{order.categories[0].title}</span></td>
+                                        <td><span>{order.price}</span></td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -133,6 +165,8 @@ function Orders () {
                     }
                 </div>
             </div>
+            <input type="submit" id="loginButton" class="buttons" value="Login"
+                            onClick={yelpFusion} />
         </div>
     )
 }
