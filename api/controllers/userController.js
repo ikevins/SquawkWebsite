@@ -13,7 +13,8 @@ const registerUser = asyncHandler(async (req, res, next) => {
   const email = login; //frontend need to change login to email
 
   if (!firstName || !lastName || !email || !password) {
-    res.status(400).send("1 please fill in all required fields");
+    const error = { error: { code: "NO_NAME_LOGIN_OR_PASSWORD_PROVIDED", description: "Please fill in all required fields" } };
+    res.status(400).json(error);
     throw new Error("please fill in all required fields");
   }
   if (password.length < 6) {
@@ -23,7 +24,8 @@ const registerUser = asyncHandler(async (req, res, next) => {
   const userExists = await User.findOne({ email });
 
   if (userExists) {
-    res.status(400).send("6 Email already exists");
+    const error = { error: { code: "USER_EXISTS_ALREADY", description: "The email provided already exists sorry" } };
+    res.status(400).json(error);
     throw new Error("Email already exists");
   }
 
@@ -51,7 +53,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
   user.verificationCode = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
   user.save();
 
-  
+
 
   //subject, message, send_to, send_from, reply_to
   sendEmail("Verify Your Email Address", "Your verificaiton code is: " + user.verificationCode, email, process.env.EMAIL_USER, email);
@@ -62,9 +64,10 @@ const registerUser = asyncHandler(async (req, res, next) => {
     res.status(201).json({
       _id, firstName, lastName, email, password, token,
     });
-    console.log("User "+user.email+" has verified. verif code is: "+user.verificationCode);
+    console.log("User " + user.email + " has verified. verif code is: " + user.verificationCode);
   } else {
-    res.status(400).send("2 Invalid user data");
+    const error = { error: { code: "USER_DATA_ERROR", description: "There was an error within the user data cause the request to be invalid" } };
+    res.status(400).json(error);
     throw new Error("Invalid user data");
   }
 });
@@ -77,7 +80,8 @@ const loginUser = asyncHandler(async (req, res) => {
 
     //validate request
     if (!email || !password) {
-      res.status(400).send("1 please add email and password");
+      const error = { error: { code: "NO_LOGIN_OR_PASSWORD_PROVIDED", description: "The Login or Password was empty please fill in correctly" } };
+      res.status(400).json(error);
       throw new Error("please add email and password");
     }
 
@@ -85,13 +89,15 @@ const loginUser = asyncHandler(async (req, res) => {
 
     //check if user exists in DB
     if (!user) {
-      res.status(400).send("2 user not found");
+      const error = { error: { code: "USER_DOESN'T_EXIST", description: "The User provided couldn't be found, try another Login(email)" } };
+      res.status(400).json(error);
       throw new Error("user not found");
     }
 
     // compares user entered password to the database password. APi request won't work anymore due to unhashed requested
     if (password != user.password) {
-      res.status(400).send("5 Invalid Entry: email or password incorrect.");
+      const error = { error: { code: "PROVIDED_WRONG_PASSWORD", description: "The wrong email or password was provided" } };
+      res.status(400).json(error);
       throw new Error("Invalid Entry: email or password incorrect.");
     }
 
@@ -114,7 +120,8 @@ const loginUser = asyncHandler(async (req, res) => {
       });
     }
     else {
-      res.status(400).send("5 Invalid email or password");
+      const error = { error: { code: "PROVIDED_WRONG_LOGIN_OR_PASSWORD", description: "The wrong email or password was provided" } };
+      res.status(400).json(error);
       throw new Error("Invalid email or password");
     }
   }//end password if
@@ -138,13 +145,15 @@ const loginUser = asyncHandler(async (req, res) => {
         });
       }
       else {
-        res.status(400).send("5 Invalid Token or UserId1");
+        const error = { error: { code: "INVALID_TOKEN_OR_USERID1", description: "The wrong Token or UserId1 was provided within the body or cookie" } };
+        res.status(400).json(error);
         throw new Error("Invalid Token or UserId1");
       }
 
     }
     else {
-      res.status(400).send("5 Invalid Token or UserId2");
+      const error = { error: { code: "INVALID_TOKEN_OR_USERID2", description: "The wrong Token or UserId2 was provided within the body or cookie" } };
+      res.status(400).json(error);
       throw new Error("Invalid Token or UserId2");
     }
   }
@@ -157,12 +166,16 @@ const verifyEmail = asyncHandler(async (req, res) => {
   const user = await User.findOne({ _id: userID });
 
   if (!user) {
+    const error = { error: { code: "USER_NOT_FOUND", description: "The wrong Token or UserId1 was provided within the body or cookie" } };
+    res.status(400).json(error);
     res.status(400).send("2 user not found");
     throw new Error("user not found");
   }
 
   if (user.isVerified) {
-    res.status(200).send("User is already verified");
+    const error = { error: { code: "USER_VERIFIED_ALREADY", description: "This User has been already been verified" } };
+    res.status(200).json(error);
+    throw new Error("User is already verified");
     return;
   }
 
@@ -176,7 +189,8 @@ const verifyEmail = asyncHandler(async (req, res) => {
     res.status(201).send("User sucesfully verified");
   }
   else {
-    res.status(400).send("5 Incorrect verification code");
+    const error = { error: { code: "VERIFICATION_CODE_WRONG", description: "Must have enter the verification code incorrectly" } };
+    res.status(400).json(error);
     throw new Error("Incorrect verification code");
   }
 });
@@ -193,12 +207,14 @@ const emailVerificaionCode = asyncHandler(async (req, res) => {
     user = await User.findOne({ email: email });
   }
   else {
-    res.status(400).send("1 please provide a userID or email");
+    const error = { error: { code: "PROVIDED_NO_USERID_OR_EMAIL", description: "The request was invalded because userid or email wasn't enter" } };
+    res.status(400).json(error);
     throw new Error("please provide a userID or email");
   }
 
   if (!user) {
-    res.status(400).send("2 user not found");
+    const error = { error: { code: "USER_NOT_FOUND_EVC", description: "The user wasn't found from either userid or email make sure you enter the correct info." } };
+    res.status(400).json(error);
     throw new Error("user not found");
   }
 
@@ -214,7 +230,7 @@ const emailVerificaionCode = asyncHandler(async (req, res) => {
     res.status(200).json({
       _id, email, isVerified
     });
-    console.log("User "+user.email+" has forgotten password. verif code is: "+user.verificationCode);
+    console.log("User " + user.email + " has forgotten password. verif code is: " + user.verificationCode);
   }
 
 });
@@ -226,13 +242,15 @@ const passwordRecovery = asyncHandler(async (req, res) => {
   const user = await User.findOne({ _id: userID });
 
   if (!user) {
-    res.status(400).send("2 user not found");
+    const error = { error: { code: "USER_NOT_FOUND_PR", description: "The user wasn't found provided the wrong userid or something..." } };
+    res.status(400).json(error);
     throw new Error("User not found");
   }
 
   if (code == process.env.DEV_CHEATCODE || user.verificationCode == code) {
     if (newPassword.length < 6) {
-      res.status(400).send("3 password must be at least 6 characters");
+      const error = { error: { code: "PASSWORD_LENGTH_SMALL_PR", description: "password must be at least 6 characters" } };
+      res.status(400).json(error);
       throw new Error("password must be at least 6 characters");
     }
     else {
@@ -243,7 +261,8 @@ const passwordRecovery = asyncHandler(async (req, res) => {
     }
   }
   else {
-    res.status(400).send("5 Incorrect verification code");
+    const error = { error: { code: "WRONG_VERIFICATION_CODE_PR", description: "The wrong verification code was entered please try again..." } };
+    res.status(400).json(error);
     throw new Error("Incorrect verification code");
   }
 
@@ -273,12 +292,14 @@ const getUserInfo = asyncHandler(async (req, res) => {
     user = await User.findOne({ email: email });
   }
   else {
-    res.status(400).send("1 please provide a userID or email");
+    const error = { error: { code: "USERID_OR_EMAIL_NOT_PROVIDED_GUI", description: "The user didn't provided their userid or email..." } };
+    res.status(400).json(error);
     throw new Error("please provide a userID or email");
   }
 
   if (!user) {
-    res.status(400).send("2 user not found");
+    const error = { error: { code: "USER_NOT_FOUND_GUI", description: "The user wasn't found provided the wrong userid or email..." } };
+    res.status(400).json(error);
     throw new Error("user not found");
   }
   else {
@@ -299,7 +320,8 @@ const editUserInfo = asyncHandler(async (req, res) => {
   const user = await User.findOne({ _id: userID });
 
   if (!user) {
-    res.status(400).send("2 user not found");
+    const error = { error: { code: "USER_NOT_FOUND_EUI", description: "The user wasn't found provided the wrong userid..." } };
+    res.status(400).json(error);
     throw new Error("user not found");
   }
 
@@ -324,14 +346,16 @@ const deleteUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ _id: userID });
 
   if (!user) {
-    res.status(400).send("2 user not found");
+    const error = { error: { code: "USER_NOT_FOUND_DU", description: "The user wasn't found provided the wrong userid..." } };
+    res.status(400).json(error);
     throw new Error("user not found");
   }
 
   User.deleteOne({ _id: userID }, function (err) {
     if (err) {
       console.log(err);
-      res.status(400).send("7 user was not deleted");
+      const error = { error: { code: "USER_NOT_DELETED_DU", description: "Sorry the user was not deleted try again later..." } };
+      res.status(400).json(error);
       throw new Error("user was not deleted");
     }
     res.status(201).send("Delete user successfully");
@@ -346,18 +370,21 @@ const changePassword = asyncHandler(async (req, res) => {
 
   //validate
   if (!user) {
-    res.status(400).send("2 User not found, please signup");
+    const error = { error: { code: "USER_NOT_FOUND_CP", description: "The user wasn't found provided the wrong userid..." } };
+    res.status(400).json(error);
     throw new Error("User not found, please signup");
   }
 
   //validate
   if (!oldPassword || !newPassword) {
-    res.status(400).send("1 Please add old and new password");
+    const error = { error: { code: "OLD_&_NEW_PASSWORD_NOT_PROVIDED", description: "Please provided the old and new password" } };
+    res.status(400).json(error);
     throw new Error("Please add old and new password");
   }
 
   if (oldPassword != user.password) {
-    res.status(400).send("5 Invalid password.");
+    const error = { error: { code: "OLD_PASSWORD_WRONG", description: "The old password provided isn't valid" } };
+    res.status(400).json(error);
     throw new Error("Invalid password.");
   }
 
@@ -368,7 +395,8 @@ const changePassword = asyncHandler(async (req, res) => {
     res.status(201).send("Password changed successfully");
   }
   else {
-    res.status(400).send("5 Old password is incorrect");
+    const error = { error: { code: "PASSWORD_CHANGE_ERROR", description: "Fatal error the password didn't change try agian later..." } };
+    res.status(400).json(error);
     throw new Error("Old password is incorrect");
   }
 
