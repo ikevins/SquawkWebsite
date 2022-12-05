@@ -15,20 +15,22 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(cors());
 
+
+//Api routes for any user function
+app.use('/api', userRoute);
+app.use('/yelp', yelpRoute);
+
 // Server static assets if in production
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
   // app.use(express.static('frontend/build'));
 
-  // app.use(express.static(__dirname));
-  // app.get('/*', (req, res) => {
-  //   res.sendFile(path.join(__dirname, 'index.html'));
-  // });
+  app.use(express.static(__dirname));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+  });
 }
 
-//Api routes for any user function
-app.use('/api', userRoute);
-app.use('/yelp', yelpRoute);
 
 
 const PORT = process.env.PORT || 5000;
