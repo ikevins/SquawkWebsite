@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import sha256 from './sha256';
 import eats from '../assets/eats.mp4'
 import './RegisterPage.css';
+import squawkLogo from '../assets/squawklogo.png';
 
 function Register()
 {
@@ -36,7 +37,7 @@ function Register()
         if(RegPassword.value !== ConfirmPassword.value)
         {
             // alert("Passwords do not match!")
-            setMessage('YOU SUCK');
+            setMessage('Passwords do not match!');
             return;
         }
 
@@ -71,8 +72,8 @@ function Register()
 
     return(   
     <div className='main'>
-        <div className="overlay"></div>
-        <video src={eats} autoPlay loop muted/>
+        <div class="left">
+        
             <div class="boxR">
                 <div class="formBox">
                     <form onSubmit={doRegister}>
@@ -113,6 +114,11 @@ function Register()
         </div>
         <span id="loginResult">{message}</span>
      </div>
+     </div>
+     <div class="right">
+            <div className="overlay"></div>
+            <video src={eats} autoPlay loop muted/>
+        </div>
      </div>
     );
 };

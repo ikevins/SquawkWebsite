@@ -5,6 +5,7 @@
     "main": "server.js",
     "scripts": {
         "start": "node server.js",
+        "test": "cross-env NODE_ENV=test jest --testTimeout=5000",
         "heroku-postbuild": " NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
     },
     "author": "",
@@ -21,6 +22,12 @@
         "mongodb": "^4.10.0",
         "mongoose": "^6.7.1",
         "nodemailer": "^6.8.0",
-        "nodemon": "^2.0.20"
+        "nodemon": "^2.0.20",
+        "yelp-fusion": "^3.0.0"
+    },
+    "devDependencies": {
+        "cross-env": "^7.0.3",
+        "jest": "^29.3.1",
+        "supertest": "^6.3.1"
     }
 }
