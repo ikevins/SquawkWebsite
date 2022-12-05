@@ -20,9 +20,9 @@ if (process.env.NODE_ENV === 'production') {
   // Set static folder
   // app.use(express.static('frontend/build'));
 
-  app.use(express.static('frontend/build'))
+  app.use(express.static(__dirname));
   app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
   });
 }
 
