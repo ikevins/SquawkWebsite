@@ -12,7 +12,7 @@
     padding: 1em;
     display: flex;
     flex-direction: column;
-    gap:25px;
+    gap:10px;
     overflow: auto;
 }
 .dashboard-content-header {
@@ -41,6 +41,7 @@
     font-size: 0.875rem;
     border-radius: 0.375rem;
     border: 1px solid gray;
+    width: 80%;
 }
 .dashboard-content-search:focus {
     outline: #2D83B5 auto 1px;
@@ -152,8 +153,11 @@ td span {
     font-weight: 700;
     border-color: #FFFFFF;
 }
+.BtnHolder{
+    text-align: center;
+}
 div[id="landingBackground"]{
-    background-image: url(../assets/images/burgers.jpg);
+    background: linear-gradient(to right,#092b2c,#105e48,#0f684c,#105e48,#092b2c);
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -161,4 +165,15 @@ div[id="landingBackground"]{
     top: 0;
     left: 0;
     align-items: center;
+}
+input[id="locationBtn"]{
+    border: none;
+    outline: none;
+    background: #fd9134;
+    padding: 11px 25px;
+    align-content: center;
+    margin-top: 15px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
 }

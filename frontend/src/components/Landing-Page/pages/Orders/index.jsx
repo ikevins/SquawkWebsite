@@ -47,22 +47,24 @@ var searchtxt;
 //     }    
 // };
 
-async function yelpFusion() {
+//----------------------------------------------------
 
-    try {
+// async function yelpFusion() {
 
-        const response = await fetch(buildPath('yelp/search?location='+ userLocation + '&term='+ searchtxt));
-        var Results = await response.json();
-        console.log(Results);
-        all_orders = Results;
-        Orders();
-    }
-    catch(e)
-    {
-        console.log(e.toString());
-        return;
-    }    
-};
+//     try {
+
+//         const response = await fetch(buildPath('yelp/search?location='+ userLocation + '&term='+ searchtxt));
+//         var Results = await response.json();
+//         console.log(Results);
+//         all_orders = Results;
+//         Orders();
+//     }
+//     catch(e)
+//     {
+//         console.log(e.toString());
+//         return;
+//     }    
+// };
 
 
 
@@ -72,7 +74,8 @@ function doNewLocation(){
 }
 
 
-function Orders () {
+//function Orders () 
+const Orders = () =>{
     //const [search, setSearch] = useState('');
     const [orders, setOrders] = useState(all_orders);
     const [page, setPage] = useState(1);
@@ -82,6 +85,24 @@ function Orders () {
         setPagination(calculateRange(all_orders, 5));
         setOrders(sliceData(all_orders, page, 5));
     }, []);
+
+    async function yelpFusion() {
+
+        try {
+    
+            const response = await fetch(buildPath('yelp/search?limit=50&location='+ userLocation + '&term='+ searchtxt.value));
+            var Results = await response.json();
+            console.log('yelp/search?location='+ userLocation + '&term='+ searchtxt.value);
+            console.log(Results);
+            all_orders = Results;
+            setOrders(sliceData(all_orders, page, 5));
+        }
+        catch(e)
+        {
+            console.log(e.toString());
+            return;
+        }    
+    };
 
     // Search
     // const __handleSearch = (event) => {
@@ -108,8 +129,7 @@ function Orders () {
     return(
         <div id="landingBackground" >
             <div className='dashboard-content'>
-                <DashboardHeader
-                    btnText="Change Location" />
+                <DashboardHeader/>
 
                 <div className='dashboard-content-container'>
                     <div className='dashboard-content-header'>
@@ -123,9 +143,7 @@ function Orders () {
                                 ref={(c) => searchtxt = c} />
                                  
                         </div>
-                        <button onClick={yelpFusion}> 
-
-                        </button>
+                        <button onClick={yelpFusion}>  Search  </button>
                     </div>
 
                     <table>
@@ -195,10 +213,11 @@ function Orders () {
                     }
                 </div>
             </div>
-            <input type="submit" id="loginButton" class="buttons" value="Change location"
-                            onClick={doNewLocation} />
+            <div className='BtnHolder'>
+                <input type="submit" id="locationBtn" class="buttons" value="Change location" onClick={doNewLocation} />
+            </div>
         </div>
     )
-}
+};
 
 export default Orders;
