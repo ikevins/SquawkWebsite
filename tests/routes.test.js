@@ -1,6 +1,6 @@
 const request = require('supertest')
 const app = require('../server');
-
+let cookies;
 
 describe('Post Register Endpoint', () => {
     it('should create a new user using register endpoint', async () => {
@@ -24,6 +24,7 @@ describe('Post Login Endpoints', () => {
                 login: process.env.TEST_EMAIL,
                 password: process.env.TEST_PASSWORD,
             })
+        cookies = res.headers['set-cookie']
         expect(res.statusCode).toEqual(201)
     });
 });
@@ -89,6 +90,7 @@ describe('Post change user password back to ', () => {
     it('should reset password if forgot using set verification code', async () => {
         const res = await request(app)
             .patch('/api/changepassword')
+            .set('Cookie', cookies)
             .send({
                 userID: process.env.TEST_USERID,
                 oldPassword: process.env.TEST_PASSWORD,
@@ -99,6 +101,7 @@ describe('Post change user password back to ', () => {
     it('set password back to original password', async () => {
         const res = await request(app)
             .patch('/api/changepassword')
+            .set('Cookie', cookies)
             .send({
                 userID: process.env.TEST_USERID,
                 oldPassword: process.env.TEST_CHANGE_PASSWORD,
@@ -120,6 +123,7 @@ describe('Post get a users info, such as firstname, email', () => {
     it('should display user info', async () => {
         const res = await request(app)
             .post('/api/getuser')
+            .set('Cookie', cookies)
             .send({
                 email: process.env.TEST_EMAIL,
             })
@@ -131,6 +135,7 @@ describe('Post edit user information only for first & last name and email', () =
     it('should change the first and last name only', async () => {
         const res = await request(app)
             .post('/api/edituser')
+            .set('Cookie', cookies)
             .send({
                 userID: process.env.TEST_USERID,
                 firstName: process.env.TEST_FIRSTNAME_EDIT,
@@ -142,6 +147,7 @@ describe('Post edit user information only for first & last name and email', () =
     it('should change back the first and last name', async () => {
         const res = await request(app)
             .post('/api/edituser')
+            .set('Cookie', cookies)
             .send({
                 userID: process.env.TEST_USERID,
                 firstName: process.env.TEST_FIRSTNAME,
