@@ -48,14 +48,28 @@ function Register()
         try
         {    
             //const response = await fetch('http://localhost:5000/api/login',
-            const response = await fetch(buildPath('api/register'),
+            // const response = await fetch(buildPath('api/register'),
+            //     {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+            var response;
+            if(process.env.NODE_ENV == 'production')
+            {
+                response = await fetch(buildPath('api/register'),
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+            }
+            else
+            {
+                response = await fetch(buildPath('api/register'),
+                {credentials: 'include', method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+            }
 
             var res = JSON.parse(await response.text());
 
         
             var user = {firstName:res.firstName,lastName:res.lastName,_id:res._id,token:res.token,password:res.password,email:res.email}
             localStorage.setItem('user_verification', JSON.stringify(user));
+
+            var user2 = {firstName:res.firstName,lastName:res.lastName,id:res._id, token: res.token}
+            localStorage.setItem('user_data', JSON.stringify(user2));
 
             setMessage('');
 
