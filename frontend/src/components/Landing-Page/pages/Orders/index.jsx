@@ -46,6 +46,11 @@ const yelpFusion = async () => {
 };
 
 
+function doNewLocation(){
+    window.location.href = "/location"
+}
+
+
 function Orders () {
     const [search, setSearch] = useState('');
     const [orders, setOrders] = useState(all_orders);
@@ -83,7 +88,7 @@ function Orders () {
         <div id="landingBackground" >
             <div className='dashboard-content'>
                 <DashboardHeader
-                    btnText="Cant Decide?" />
+                    btnText="Change Location" />
 
                 <div className='dashboard-content-container'>
                     <div className='dashboard-content-header'>
@@ -165,8 +170,8 @@ function Orders () {
                     }
                 </div>
             </div>
-            <input type="submit" id="loginButton" class="buttons" value="Login"
-                            onClick={yelpFusion} />
+            <input type="submit" id="loginButton" class="buttons" value="Change location"
+                            onClick={doNewLocation} />
         </div>
     )
 }

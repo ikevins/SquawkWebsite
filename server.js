@@ -15,6 +15,11 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(cors());
 
+
+//Api routes for any user function
+app.use('/api', userRoute);
+app.use('/yelp', yelpRoute);
+
 // Server static assets if in production
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
@@ -25,9 +30,6 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-//Api routes for any user function
-app.use('/api', userRoute);
-app.use('/yelp', yelpRoute);
 
 
 const PORT = process.env.PORT || 5000;
