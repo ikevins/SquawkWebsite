@@ -171,6 +171,6 @@ input[id="loginButton"]{
     cursor: pointer;
 }
 span[id="loginResult"]{
-    color: black;
+    color: rgb(190, 12, 12);
     
 }

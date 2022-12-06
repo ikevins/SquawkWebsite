@@ -82,8 +82,8 @@ const Orders = () =>{
     const [pagination, setPagination] = useState([]);
 
     useEffect(() => {
-        setPagination(calculateRange(all_orders, 5));
-        setOrders(sliceData(all_orders, page, 5));
+        setPagination(calculateRange(all_orders, 4));
+        setOrders(sliceData(all_orders, page, 4));
     }, []);
 
     async function yelpFusion() {
@@ -95,7 +95,7 @@ const Orders = () =>{
             console.log('yelp/search?location='+ userLocation + '&term='+ searchtxt.value);
             console.log(Results);
             all_orders = Results;
-            setOrders(sliceData(all_orders, page, 5));
+            setOrders(sliceData(all_orders, page, 4));
         }
         catch(e)
         {
@@ -123,7 +123,7 @@ const Orders = () =>{
     // Change Page 
     const __handleChangePage = (new_page) => {
         setPage(new_page);
-        setOrders(sliceData(all_orders, new_page, 5));
+        setOrders(sliceData(all_orders, new_page, 4));
     }
 
     return(
@@ -133,24 +133,25 @@ const Orders = () =>{
 
                 <div className='dashboard-content-container'>
                     <div className='dashboard-content-header'>
-                        <h2>Restaurants</h2>
+                        {/* <h2>Restaurants</h2> */}
                         <div className='dashboard-content-search'>
                             <input
                                 type='text'
                                 // value={search}
-                                placeholder='Search..'
+                                placeholder='Im In The Mood For...'
                                 className='dashboard-content-input'
                                 ref={(c) => searchtxt = c} />
                                  
                         </div>
-                        <button onClick={yelpFusion}>  Search  </button>
+                        {/* <button id="searchBtn"  onClick={yelpFusion}>  Search  </button> */}
+                        <input type="submit" id="searchBtn" class="buttons" value="Search" onClick={yelpFusion} />
                     </div>
 
                     <table>
                         <thead>
                             <th>RATING</th>
                             <th>DISTANCE</th>
-                            <th>STATUS</th>
+                            <th>OPEN?</th>
                             <th>NAME</th>
                             <th>TYPE OF FOOD</th>
                             <th>COST</th>

@@ -31,18 +31,18 @@ function DashboardHeader ({ btnText, onClick }) {
                 <img 
                     src={LogoutIcon}
                     alt='icon-logout'
-                    className='dashbord-header-icon' 
+                    className='dashbord-header-icon1' 
                     onClick={doLogout} 
                     id='dashboard-item'/>
                 <img 
                     src={NotificationIcon}
                     alt='notification-icon'
-                    className='dashbord-header-icon'
+                    className='dashbord-header-icon2'
                     id='dashboard-item' />
                 <img 
                     src={SettingsIcon}
                     alt='settings-icon'
-                    className='dashbord-header-icon' 
+                    className='dashbord-header-icon3' 
                     onClick={goEdit} 
                     id='dashboard-item'/>
                 <img

@@ -30,7 +30,7 @@ function UserStuff()
 
         try
         {    
-            const response = await fetch(buildPath('yelp/search?limit=50&location=' + userLocation.value))
+            const response = await fetch(buildPath('yelp/search?limit=40&location=' + userLocation.value))
             var Results = await response.json();
             console.log(Results);
             localStorage.setItem('user_restaurants', JSON.stringify(Results));

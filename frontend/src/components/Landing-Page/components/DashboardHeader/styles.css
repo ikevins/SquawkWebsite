@@ -32,7 +32,7 @@
     align-items: center;
 }
 .dashbord-header-icon {
-    width: 30px;
+    width: 60px;
     cursor: pointer;
 
 }
@@ -41,9 +41,12 @@
     height: 40px;
     cursor: pointer;
     border-radius: 20px;
+    position: absolute;
+    right: -20px;
+    
 }
 #dashboard-item{
-    margin-right: 70px;
+    margin-right: 90px;
 }
 
 span[id="userName"]{
@@ -52,3 +55,29 @@ span[id="userName"]{
     margin-right: 20%;
     font-weight: 800;
 } 
+
+.dashbord-header-icon1 {
+    width: 40px;
+    height: 35px;
+    cursor: pointer;
+    border-radius: 20px;
+    position: absolute;
+    right: 60px;
+}
+
+.dashbord-header-icon2 {
+    width: 60px;
+    height: 30px;
+    cursor: pointer;
+    position: absolute;
+    right: 110px;
+
+}
+
+.dashbord-header-icon3 {
+    width: 60px;
+    height: 35px;
+    cursor: pointer;
+    position: absolute;
+    right: 170px;
+}
