@@ -170,3 +170,7 @@ input[id="loginButton"]{
     font-weight: 600;
     cursor: pointer;
 }
+span[id="loginResult"]{
+    color: black;
+    
+}

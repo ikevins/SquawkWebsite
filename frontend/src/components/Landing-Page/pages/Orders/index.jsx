@@ -1,14 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import DashboardHeader from '../../components/DashboardHeader';
-
-import all_orders from '../../constants/orders';
+//import all_orders from '../../constants/orders';
 import {calculateRange, sliceData} from '../../utils/table-pagination';
-
 import '../styles.css';
 import DoneIcon from '../../assets/icons/done.svg';
 import CancelIcon from '../../assets/icons/cancel.svg';
 
 var userLocation = localStorage.getItem('user_location');
+var all_orders = JSON.parse(localStorage.getItem('user_restaurants'));
 
 const app_name = 'cop4331-1738'
 function buildPath(route)
@@ -28,15 +27,35 @@ function buildPath(route)
 
 //yelpFusion();
 
+var searchtxt;
 
-const yelpFusion = async () => {
 
-     try {
+// const yelpFusion = async () => {
 
-        const response = await fetch(buildPath('yelp/search?location='+ userLocation));
+//     try {
+
+//         const response = await fetch(buildPath('yelp/search?location='+ userLocation + '&term='+ searchtxt));
+//         var Results = await response.json();
+//         console.log(Results);
+//         all_orders = Results;
+//         Orders();
+//     }
+//     catch(e)
+//     {
+//         console.log(e.toString());
+//         return;
+//     }    
+// };
+
+async function yelpFusion() {
+
+    try {
+
+        const response = await fetch(buildPath('yelp/search?location='+ userLocation + '&term='+ searchtxt));
         var Results = await response.json();
         console.log(Results);
         all_orders = Results;
+        Orders();
     }
     catch(e)
     {
@@ -46,13 +65,15 @@ const yelpFusion = async () => {
 };
 
 
+
+
 function doNewLocation(){
     window.location.href = "/location"
 }
 
 
 function Orders () {
-    const [search, setSearch] = useState('');
+    //const [search, setSearch] = useState('');
     const [orders, setOrders] = useState(all_orders);
     const [page, setPage] = useState(1);
     const [pagination, setPagination] = useState([]);
@@ -63,20 +84,20 @@ function Orders () {
     }, []);
 
     // Search
-    const __handleSearch = (event) => {
-        setSearch(event.target.value);
-        if (event.target.value !== '') {
-            let search_results = orders.filter((item) =>
-                item.name.toLowerCase().includes(search.toLowerCase()) ||
-                item.categories[0].alias.toLowerCase().includes(search.toLowerCase()) ||
-                item.categories[0].title.toLowerCase().includes(search.toLowerCase())
-            );
-            setOrders(search_results);
-        }
-        else {
-            __handleChangePage(1);
-        }
-    };
+    // const __handleSearch = (event) => {
+    //     setSearch(event.target.value);
+    //     if (event.target.value !== '') {
+    //         let search_results = orders.filter((item) =>
+    //             item.name.toLowerCase().includes(search.toLowerCase()) ||
+    //             item.categories[0].alias.toLowerCase().includes(search.toLowerCase()) ||
+    //             item.categories[0].title.toLowerCase().includes(search.toLowerCase())
+    //         );
+    //         setOrders(search_results);
+    //     }
+    //     else {
+    //         __handleChangePage(1);
+    //     }
+    // };
 
     // Change Page 
     const __handleChangePage = (new_page) => {
@@ -96,11 +117,15 @@ function Orders () {
                         <div className='dashboard-content-search'>
                             <input
                                 type='text'
-                                value={search}
+                                // value={search}
                                 placeholder='Search..'
                                 className='dashboard-content-input'
-                                onChange={e => __handleSearch(e)} />
+                                ref={(c) => searchtxt = c} />
+                                 
                         </div>
+                        <button onClick={yelpFusion}> 
+
+                        </button>
                     </div>
 
                     <table>
