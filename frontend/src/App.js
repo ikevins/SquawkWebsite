@@ -9,6 +9,7 @@ import PasswordUpdate from './pages/PasswordUpdate';
 import ForgotPassword from './pages/ForgotPassword';
 import Verification from './pages/EmailConfirmation';
 import UserStuff from './pages/UserStuff';
+import PasswordRecovery from './pages/passwordRecovery';
 
 
 function App() {
@@ -38,6 +39,9 @@ function App() {
         </Route>
         <Route path="/location" exact>
           <UserStuff />
+        </Route>
+        <Route path="/recovery" exact>
+          <PasswordRecovery />
         </Route>
         <Redirect to="/" />
       </Switch>
