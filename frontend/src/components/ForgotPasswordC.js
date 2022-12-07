@@ -42,12 +42,13 @@ function ForgotPasswordC()
             if (response.ok)
             {
                 localStorage.setItem('recovery_email', recoveryEmail.value);
-                alert("Recovery Email was sent");
+                //alert("Recovery Email was sent");
                 window.location.href = '/recovery';
             }
             else 
             {
-                alert("Incorrect Email!");
+                //alert("Incorrect Email!");
+                setMessage('guard me');
                 console.log(js);
             }
 
@@ -82,7 +83,11 @@ function ForgotPasswordC()
                 </div>
                 <input type="submit" id="UpdatePassButton" class="buttons" value = "Send email"
                 onClick={sendRecovery} />
+                <span id="loginResult">{message}</span>
+
                 </form>
+                <span id="loginResult">{message}</span>
+
             </div>
         </div>
     </div>
