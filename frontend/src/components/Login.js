@@ -51,11 +51,18 @@ function Login()
 
             var res = JSON.parse(await response.text());
 
-            var user = {firstName:res.firstName,lastName:res.lastName,id:res._id, token: res.token}
-            localStorage.setItem('user_data', JSON.stringify(user));
-
-            setMessage('');
-            window.location.href = '/location';
+            if(response.status == 200 ||response.status == 201 )
+            {
+                var user = {firstName:res.firstName,lastName:res.lastName,id:res._id, token: res.token}
+                localStorage.setItem('user_data', JSON.stringify(user));
+                
+                setMessage('');
+                window.location.href = '/location';
+            }
+            else {
+                setMessage('User/Password combination incorrect');
+            }
+            
 
         }
         catch(e)
@@ -96,19 +103,24 @@ function Login()
             var res = JSON.parse(await response.text());
             console.log(response);
 
-                var user = {firstName:res.firstName,lastName:res.lastName,id:res._id}
+            if(response.status == 200 ||response.status == 201 )
+            {
+                var user = {firstName:res.firstName,lastName:res.lastName,id:res._id, token: res.token}
                 localStorage.setItem('user_data', JSON.stringify(user));
 
                 setMessage('');
                 window.location.href = '/location';
-            
+            }
+            else {
+                setMessage('User/Password combination incorrect');
+            }
                 // var user = {firstName:res.firstName,lastName:res.lastName,id:res._id}
                 // localStorage.setItem('user_data', JSON.stringify(user));
 
                 // setMessage('');
                 // window.location.href = '/location';
 
-                //setMessage('User/Password combination incorrect');
+                
 
         }
         catch(e)
