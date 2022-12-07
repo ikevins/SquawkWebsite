@@ -34,7 +34,7 @@ function PasswordUpdateC()
  {
     if(newPassword.value !== ConfirmPassword.value)
     {
-        alert("Passwords do not match!")
+        setMessage("Passwords do not match!");
         return;
     }
 
@@ -52,15 +52,15 @@ function PasswordUpdateC()
         
         if (response.ok)
         {
-            alert("Password was successfully updated!");
+            //setMessage("Password was successfully updated!");
             window.location.href = "/dashboard";
         }
         else 
         {
-            alert("Incorrect Code!");
+            setMessage("Incorrect Password");
         }
 
-        setMessage('');
+       // setMessage('');
     }
     catch(e)
     {

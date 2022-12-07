@@ -48,11 +48,11 @@ function ForgotPasswordC()
             else 
             {
                 //alert("Incorrect Email!");
-                setMessage('guard me');
+                setMessage('Invalid Email Address');
                 console.log(js);
             }
 
-            setMessage('');
+            //setMessage('');
         }
         catch(e)
         {
@@ -80,10 +80,12 @@ function ForgotPasswordC()
                         ref={(c) => recoveryEmail = c} />
                         <span>Enter Email</span>
                         <i></i><br />
+                        <span id="loginResult">{message}</span>
+
                 </div>
                 <input type="submit" id="UpdatePassButton" class="buttons" value = "Send email"
                 onClick={sendRecovery} />
-                <span id="loginResult">{message}</span>
+                
 
                 </form>
                 <span id="loginResult">{message}</span>

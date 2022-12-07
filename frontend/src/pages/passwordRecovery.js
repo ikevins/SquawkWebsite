@@ -25,13 +25,13 @@ function passwordRecovery()
     var userIDrec;
     
 
-   // const [message,setMessage] = useState('');
+    //const [message,setMessage] = useState('');
 
     const sendRecovery = async event => 
     {
         if(newPassword.value !== passwordCheck.value)
         {
-            alert("Passwords do not match!");
+            //setMessage('Passwords do not match!');
             return;
         }
 
@@ -49,12 +49,14 @@ function passwordRecovery()
             
             if (response.ok)
             {
-                alert("Password Successfully Reset!");
+                //alert("Password Successfully Reset!");
+                //setMessage('');
                 window.location.href = "/"
             }
             else 
             {
-                alert("Incorrect Code!");
+                //alert("Incorrect Code!");
+                //setMessage('Incorrect Code');
                 console.log(js);
             }
 
@@ -130,6 +132,8 @@ function passwordRecovery()
                 <input type="submit" id="UpdatePassButton" class="buttons" value = "Update Password"
                 onClick={getUser} />
                 </form>
+                
+
             </div>
         </div>
     </div>
