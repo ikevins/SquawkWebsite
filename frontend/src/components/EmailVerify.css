@@ -26,34 +26,36 @@ img{
     margin-left: 37%;
 }
 
-.box{
+.boxReStop{
     position: relative;
     width: 380px;
-    height: 420px;
+    height: 300px;
     background: #092b2c;
     border-radius: 8px;
     overflow: hidden;
+    margin:auto;
+    margin-top: 30px;
 }
 
-.box::before{
+.boxR::before{
     content: '';
     position: absolute;
     top: -50%;
     left: -50%;
     width: 380px;
-    height: 420px;
+    height: 600px;
     background: linear-gradient(0deg,transparent,#17a074,#17a074);
     transform-origin: bottom right;
     animation: animate 6s linear infinite;
 }
 
-.box::after{
+.boxR::after{
     content: '';
     position: absolute;
     top: -50%;
     left: -50%;
     width: 380px;
-    height: 420px;
+    height: 600px;
     background: linear-gradient(0deg,transparent,#17a074,#17a074);
     transform-origin: bottom right;
     animation: animate 6s linear infinite;
@@ -159,7 +161,7 @@ img{
     color: #fd9134;
 }
 
-input[id="loginButton"]{
+input[id="RegisterButton"]{
     border: none;
     outline: none;
     background: #fd9134;
@@ -169,8 +171,4 @@ input[id="loginButton"]{
     border-radius: 4px;
     font-weight: 600;
     cursor: pointer;
-}
-span[id="loginResult"]{
-    color: rgb(190, 12, 12);
-    
 }

@@ -1,14 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import DashboardHeader from '../../components/DashboardHeader';
-
-import all_orders from '../../constants/orders';
+//import all_orders from '../../constants/orders';
 import {calculateRange, sliceData} from '../../utils/table-pagination';
-
 import '../styles.css';
 import DoneIcon from '../../assets/icons/done.svg';
 import CancelIcon from '../../assets/icons/cancel.svg';
 
 var userLocation = localStorage.getItem('user_location');
+var all_orders = JSON.parse(localStorage.getItem('user_restaurants'));
 
 const app_name = 'cop4331-1738'
 function buildPath(route)
@@ -28,22 +27,46 @@ function buildPath(route)
 
 //yelpFusion();
 
+var searchtxt;
 
-const yelpFusion = async () => {
 
-     try {
+// const yelpFusion = async () => {
 
-        const response = await fetch(buildPath('yelp/search?location='+ userLocation));
-        var Results = await response.json();
-        console.log(Results);
-        all_orders = Results;
-    }
-    catch(e)
-    {
-        console.log(e.toString());
-        return;
-    }    
-};
+//     try {
+
+//         const response = await fetch(buildPath('yelp/search?location='+ userLocation + '&term='+ searchtxt));
+//         var Results = await response.json();
+//         console.log(Results);
+//         all_orders = Results;
+//         Orders();
+//     }
+//     catch(e)
+//     {
+//         console.log(e.toString());
+//         return;
+//     }    
+// };
+
+//----------------------------------------------------
+
+// async function yelpFusion() {
+
+//     try {
+
+//         const response = await fetch(buildPath('yelp/search?location='+ userLocation + '&term='+ searchtxt));
+//         var Results = await response.json();
+//         console.log(Results);
+//         all_orders = Results;
+//         Orders();
+//     }
+//     catch(e)
+//     {
+//         console.log(e.toString());
+//         return;
+//     }    
+// };
+
+
 
 
 function doNewLocation(){
@@ -51,63 +74,102 @@ function doNewLocation(){
 }
 
 
-function Orders () {
-    const [search, setSearch] = useState('');
+//function Orders () 
+const Orders = () =>{
+    //const [search, setSearch] = useState('');
     const [orders, setOrders] = useState(all_orders);
     const [page, setPage] = useState(1);
     const [pagination, setPagination] = useState([]);
 
     useEffect(() => {
-        setPagination(calculateRange(all_orders, 5));
-        setOrders(sliceData(all_orders, page, 5));
+        setPagination(calculateRange(all_orders, 4));
+        setOrders(sliceData(all_orders, page, 4));
     }, []);
 
-    // Search
-    const __handleSearch = (event) => {
-        setSearch(event.target.value);
-        if (event.target.value !== '') {
-            let search_results = orders.filter((item) =>
-                item.name.toLowerCase().includes(search.toLowerCase()) ||
-                item.categories[0].alias.toLowerCase().includes(search.toLowerCase()) ||
-                item.categories[0].title.toLowerCase().includes(search.toLowerCase())
-            );
-            setOrders(search_results);
+    async function yelpFusion() {
+
+        try {
+    
+            const response = await fetch(buildPath('yelp/search?limit=50&location='+ userLocation + '&term='+ searchtxt.value));
+            var Results = await response.json();
+            console.log('yelp/search?location='+ userLocation + '&term='+ searchtxt.value);
+            console.log(Results);
+            all_orders = Results;
+            setOrders(sliceData(all_orders, page, 4));
         }
-        else {
-            __handleChangePage(1);
-        }
+        catch(e)
+        {
+            console.log(e.toString());
+            return;
+        }    
     };
+
+    async function yelpFusionRandom() {
+
+        try {
+    
+            const response = await fetch(buildPath('yelp/search?limit=50&location='+ userLocation));
+            var Results = await response.json();
+            console.log('yelp/search?location='+ userLocation);
+            console.log(Results[Math.floor(Math.random() * 50)]);
+            all_orders = [Results[Math.floor(Math.random() * 50)]];
+            setOrders(all_orders);
+        }
+        catch(e)
+        {
+            console.log(e.toString());
+            return;
+        }    
+    };
+
+    // Search
+    // const __handleSearch = (event) => {
+    //     setSearch(event.target.value);
+    //     if (event.target.value !== '') {
+    //         let search_results = orders.filter((item) =>
+    //             item.name.toLowerCase().includes(search.toLowerCase()) ||
+    //             item.categories[0].alias.toLowerCase().includes(search.toLowerCase()) ||
+    //             item.categories[0].title.toLowerCase().includes(search.toLowerCase())
+    //         );
+    //         setOrders(search_results);
+    //     }
+    //     else {
+    //         __handleChangePage(1);
+    //     }
+    // };
 
     // Change Page 
     const __handleChangePage = (new_page) => {
         setPage(new_page);
-        setOrders(sliceData(all_orders, new_page, 5));
+        setOrders(sliceData(all_orders, new_page, 4));
     }
 
     return(
         <div id="landingBackground" >
             <div className='dashboard-content'>
-                <DashboardHeader
-                    btnText="Change Location" />
+                <DashboardHeader/>
 
                 <div className='dashboard-content-container'>
                     <div className='dashboard-content-header'>
-                        <h2>Restaurants</h2>
+                        {/* <h2>Restaurants</h2> */}
                         <div className='dashboard-content-search'>
                             <input
                                 type='text'
-                                value={search}
-                                placeholder='Search..'
+                                // value={search}
+                                placeholder='Im In The Mood For...'
                                 className='dashboard-content-input'
-                                onChange={e => __handleSearch(e)} />
+                                ref={(c) => searchtxt = c} />
+                                 
                         </div>
+                        {/* <button id="searchBtn"  onClick={yelpFusion}>  Search  </button> */}
+                        <input type="submit" id="searchBtn" class="buttons" value="Search" onClick={yelpFusion} />
                     </div>
 
                     <table>
                         <thead>
                             <th>RATING</th>
                             <th>DISTANCE</th>
-                            <th>STATUS</th>
+                            <th>OPEN?</th>
                             <th>NAME</th>
                             <th>TYPE OF FOOD</th>
                             <th>COST</th>
@@ -170,10 +232,12 @@ function Orders () {
                     }
                 </div>
             </div>
-            <input type="submit" id="loginButton" class="buttons" value="Change location"
-                            onClick={doNewLocation} />
+            <div className='BtnHolder'>
+                <input type="submit" id="locationBtn" class="buttons" value="Change Location" onClick={doNewLocation} />
+                <input type="submit" id="randomBtn" class="buttons" value="Pick Something For Me" onClick={yelpFusionRandom} />
+            </div>
         </div>
     )
-}
+};
 
 export default Orders;

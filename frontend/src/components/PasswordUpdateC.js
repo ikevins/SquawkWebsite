@@ -53,6 +53,7 @@ function PasswordUpdateC()
         if (response.ok)
         {
             alert("Password was successfully updated!");
+            window.location.href = "/dashboard";
         }
         else 
         {

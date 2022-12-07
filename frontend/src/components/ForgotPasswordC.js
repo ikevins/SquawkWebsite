@@ -41,11 +41,13 @@ function ForgotPasswordC()
             
             if (response.ok)
             {
+                localStorage.setItem('recovery_email', recoveryEmail.value);
                 alert("Recovery Email was sent");
+                window.location.href = '/recovery';
             }
             else 
             {
-                alert("Incorrect Code!");
+                alert("Incorrect Email!");
                 console.log(js);
             }
 

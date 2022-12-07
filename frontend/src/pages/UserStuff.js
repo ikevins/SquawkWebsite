@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import eats from '../assets/eats4.mp4'
-import '../components/RegisterPage.css'
+import '../components/userLocation.css'
 
 function UserStuff()
 {
@@ -30,7 +30,7 @@ function UserStuff()
 
         try
         {    
-            const response = await fetch(buildPath('yelp/search?limit=50&location=' + userLocation.value))
+            const response = await fetch(buildPath('yelp/search?limit=40&location=' + userLocation.value))
             var Results = await response.json();
             console.log(Results);
             localStorage.setItem('user_restaurants', JSON.stringify(Results));
@@ -52,7 +52,7 @@ function UserStuff()
     <div className='main'>
         <div className="overlay"></div>
         <video src={eats} autoPlay loop muted/>
-            <div class="boxR">
+            <div class="boxguard">
                 <div class="formBox">
                     <form onSubmit={yelpCall}>
                     <h2>Another day in paradise here in...</h2><br />
