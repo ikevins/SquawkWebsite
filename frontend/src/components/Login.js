@@ -94,23 +94,27 @@ function Login()
             }
 
             var res = JSON.parse(await response.text());
+            console.log(response);
 
-            // if( res.id <= 0 )
-            // {
-            //     setMessage('User/Password combination incorrect');
-            // }
-           // else
-            {
                 var user = {firstName:res.firstName,lastName:res.lastName,id:res._id}
                 localStorage.setItem('user_data', JSON.stringify(user));
 
                 setMessage('');
-                window.location.href = '/cards';
-            }
+                window.location.href = '/location';
+            
+                // var user = {firstName:res.firstName,lastName:res.lastName,id:res._id}
+                // localStorage.setItem('user_data', JSON.stringify(user));
+
+                // setMessage('');
+                // window.location.href = '/location';
+
+                //setMessage('User/Password combination incorrect');
+
         }
         catch(e)
         {
             console.log(e.toString());
+            setMessage('User/Password combination incorrect');
             return;
         }    
     };

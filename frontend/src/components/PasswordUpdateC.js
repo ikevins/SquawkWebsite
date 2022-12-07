@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import sha256 from './sha256';
 import './PasswordUpdate.css';
+import squawkLogo from '../assets/squawklogo.png';
+import eats from '../assets/eats.mp4';
 
 function PasswordUpdateC()
 {
@@ -38,18 +40,20 @@ function PasswordUpdateC()
 
     event.preventDefault();
     var hashedNew = sha256.hash(newPassword.value);
-    var obj = {userID:userId,oldPassword:oldPassword.value,newPassword:hashedNew};
+    var hashedOld = sha256.hash(oldPassword.value);
+    var obj = {userID:userId,oldPassword:hashedOld,newPassword:hashedNew};
     var js = JSON.stringify(obj);
 
     try
     {    
         const response = await fetch(buildPath('api/changepassword'),
-            {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+            {method:'PATCH',body:js,headers:{'Content-Type': 'application/json'}});
 
         
         if (response.ok)
         {
             alert("Password was successfully updated!");
+            window.location.href = "/dashboard";
         }
         else 
         {
@@ -72,8 +76,9 @@ function PasswordUpdateC()
 
    return(
     <div className='main'>
-    <div className="overlay"></div>
-        <div class="boxR">
+    <div class="left">
+        <img src={squawkLogo} alt="logo"/>
+        <div class="boxRR">
             <div class="formBox">
                 <form>
                 <h2>Update Password</h2><br />
@@ -99,6 +104,11 @@ function PasswordUpdateC()
                 onClick={changePassword}/>
                 </form>
             </div>
+        </div>
+        </div>
+        <div class="right">
+            <div className="overlay"></div>
+            <video src={eats} autoPlay loop muted/>
         </div>
     </div>
    );

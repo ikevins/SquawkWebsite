@@ -8,6 +8,9 @@ import Orders from './components/Landing-Page/pages/Orders';
 import PasswordUpdate from './pages/PasswordUpdate';
 import ForgotPassword from './pages/ForgotPassword';
 import Verification from './pages/EmailConfirmation';
+import UserStuff from './pages/UserStuff';
+import PasswordRecovery from './pages/passwordRecovery';
+
 
 function App() {
   return (
@@ -16,7 +19,7 @@ function App() {
         <Route path="/" exact>
           <LoginPage />
         </Route>
-        <Route path="/cards" exact>
+        <Route path="/dashboard" exact>
           <Orders />
         </Route>
         <Route path="/login" exact>
@@ -33,6 +36,12 @@ function App() {
          </Route>
         <Route path="/Verification" exact>
           <Verification />
+        </Route>
+        <Route path="/location" exact>
+          <UserStuff />
+        </Route>
+        <Route path="/recovery" exact>
+          <PasswordRecovery />
         </Route>
         <Redirect to="/" />
       </Switch>

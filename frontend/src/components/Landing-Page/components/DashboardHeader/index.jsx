@@ -25,29 +25,30 @@ const goEdit = event =>
 function DashboardHeader ({ btnText, onClick }) {
     return(
         <div className='dashbord-header-container'>
-            {btnText && 
-                <button className='dashbord-header-btn' onClick={onClick}>{btnText}</button>
-            }
 
             <div className='dashbord-header-right'>
-                <LoggedInName />
+                <LoggedInName/>
                 <img 
                     src={LogoutIcon}
                     alt='icon-logout'
-                    className='dashbord-header-icon' 
-                    onClick={doLogout} />
+                    className='dashbord-header-icon1' 
+                    onClick={doLogout} 
+                    id='dashboard-item'/>
                 <img 
                     src={NotificationIcon}
                     alt='notification-icon'
-                    className='dashbord-header-icon' />
+                    className='dashbord-header-icon2'
+                    id='dashboard-item' />
                 <img 
                     src={SettingsIcon}
                     alt='settings-icon'
-                    className='dashbord-header-icon' 
-                    onClick={goEdit} />
+                    className='dashbord-header-icon3' 
+                    onClick={goEdit} 
+                    id='dashboard-item'/>
                 <img
                     className='dashbord-header-avatar'
-                    src='https://reqres.in/img/faces/9-image.jpg' />
+                    src='https://reqres.in/img/faces/9-image.jpg'
+                    id='dashboard-item' />
             </div>
         </div>
     )

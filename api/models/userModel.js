@@ -25,12 +25,9 @@ const userSchema = mongoose.Schema({
         required: [true, "please add a password"],
         minLength: [6, "password must be at least 6 characters"],
     },
-    favorite: {
-        type: Array,
-    },
-    leastFavorite: {
-        type: Array,
-    },
+    favorite: [{
+        type: String
+    }],
     verificationCode: {
         type: Number,
         default: -1,

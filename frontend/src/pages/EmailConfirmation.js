@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import eats from '../assets/eats.mp4'
-import '../components/RegisterPage.css'
+import '../components/EmailVerify.css'
 
 function Verification()
 {
@@ -74,10 +74,10 @@ function Verification()
     <div className='main'>
         <div className="overlay"></div>
         <video src={eats} autoPlay loop muted/>
-            <div class="boxR">
+            <div class="boxReStop">
                 <div class="formBox">
                     <form onSubmit={doVerify}>
-                    <h2>Register With Us Now!</h2><br />
+                    <h2>Verify Your Email Address!</h2><br />
                     <div class="inputBox">
                         <input type="text" id="RegFirstName" required="required" 
                             ref={(c) => userCode = c} />

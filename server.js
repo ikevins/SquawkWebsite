@@ -4,6 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv').config();
 const mongoose = require('mongoose');
 const userRoute = require('./api/routes/userRoute');
+const yelpRoute = require('./api/routes/yelpRoute');
 const cookieParser = require("cookie-parser");
 
 const app = express();
@@ -30,6 +31,11 @@ else
 
 
 
+
+//Api routes for any user function
+app.use('/api', userRoute);
+app.use('/yelp', yelpRoute);
+
 // Server static assets if in production
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
@@ -40,8 +46,6 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-//Api routes for any user function
-app.use('/api', userRoute);
 
 
 const PORT = process.env.PORT || 5000;
