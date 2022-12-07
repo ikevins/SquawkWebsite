@@ -215,7 +215,8 @@ const Orders = () =>{
                 </div>
             </div>
             <div className='BtnHolder'>
-                <input type="submit" id="locationBtn" class="buttons" value="Change location" onClick={doNewLocation} />
+                <input type="submit" id="locationBtn" class="buttons" value="Change Location" onClick={doNewLocation} />
+                <input type="submit" id="randomBtn" class="buttons" value="Pick Something For Me" onClick={doNewLocation} />
             </div>
         </div>
     )

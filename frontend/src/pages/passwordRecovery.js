@@ -116,18 +116,18 @@ function passwordRecovery()
                         <i></i><br />
                 </div>
                 <div class="inputBox">
-                    <input type="text" id="RegPassword" required="required" 
+                    <input type="password" id="RegPassword" required="required" 
                         ref={(c) => newPassword = c} />
                         <span>Enter New Password</span>
                         <i></i><br />
                 </div>
                 <div class="inputBox">
-                    <input type="text" id="RegPassword" required="required" 
+                    <input type="password" id="RegPassword" required="required" 
                         ref={(c) => passwordCheck = c} />
                         <span>Re-enter password</span>
                         <i></i><br />
                 </div>
-                <input type="submit" id="UpdatePassButton" class="buttons" value = "Send email"
+                <input type="submit" id="UpdatePassButton" class="buttons" value = "Update Password"
                 onClick={getUser} />
                 </form>
             </div>

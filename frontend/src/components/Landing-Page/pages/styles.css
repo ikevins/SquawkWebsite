@@ -190,3 +190,15 @@ input[id="searchBtn"]{
     cursor: pointer;
     margin-right: 60px;
 }
+input[id="randomBtn"]{
+    border: none;
+    outline: none;
+    background: #fd9134;
+    padding: 11px 25px;
+    align-content: center;
+    margin-top: 2px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 10px;
+}
