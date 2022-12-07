@@ -104,6 +104,24 @@ const Orders = () =>{
         }    
     };
 
+    async function yelpFusionRandom() {
+
+        try {
+    
+            const response = await fetch(buildPath('yelp/search?limit=50&location='+ userLocation));
+            var Results = await response.json();
+            console.log('yelp/search?location='+ userLocation);
+            console.log(Results[Math.floor(Math.random() * 50)]);
+            all_orders = [Results[Math.floor(Math.random() * 50)]];
+            setOrders(all_orders);
+        }
+        catch(e)
+        {
+            console.log(e.toString());
+            return;
+        }    
+    };
+
     // Search
     // const __handleSearch = (event) => {
     //     setSearch(event.target.value);
@@ -216,7 +234,7 @@ const Orders = () =>{
             </div>
             <div className='BtnHolder'>
                 <input type="submit" id="locationBtn" class="buttons" value="Change Location" onClick={doNewLocation} />
-                <input type="submit" id="randomBtn" class="buttons" value="Pick Something For Me" onClick={doNewLocation} />
+                <input type="submit" id="randomBtn" class="buttons" value="Pick Something For Me" onClick={yelpFusionRandom} />
             </div>
         </div>
     )

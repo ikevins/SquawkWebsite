@@ -88,11 +88,11 @@ tr, thead {
     color: inherit;
     display: table-row;
     vertical-align: middle;
-    text-align: center;
+    text-align: left;
     outline: 0px;
 }
 td {
-    text-align: left;
+    text-align: center;
     padding: 12px 24px;
     background: transparent;
     box-shadow: none;
